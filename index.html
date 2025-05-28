@@ -1,14 +1,247 @@
-<!doctype html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Deadline Tracker</title>
-  <link href='/style.css' rel='stylesheet'>
-</head>
-<body>
-  <h1>Internal Work App: Deadline Tracker</h1>
-  <!-- App content will go here -->
-  <script defer type="text/javascript" src="/main.js"></script>
-</body>
+<html>
+  <head>
+    <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin="" />
+    <link
+      rel="stylesheet"
+      as="style"
+      onload="this.rel='stylesheet'"
+      href="https://fonts.googleapis.com/css2?display=swap&amp;family=Noto+Sans%3Awght%40400%3B500%3B700%3B900&amp;family=Plus+Jakarta+Sans%3Awght%40400%3B500%3B700%3B800"
+    />
+
+    <title>Stitch Design</title>
+    <link rel="icon" type="image/x-icon" href="data:image/x-icon;base64," />
+
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  </head>
+  <body>
+    <div class="relative flex size-full min-h-screen flex-col bg-[#f8fcfa] group/design-root overflow-x-hidden" style='font-family: "Plus Jakarta Sans", "Noto Sans", sans-serif;'>
+      <div class="layout-container flex h-full grow flex-col">
+        <header class="flex items-center justify-between whitespace-nowrap border-b border-solid border-b-[#e6f4ef] px-10 py-3">
+          <div class="flex items-center gap-4 text-[#0c1c17]">
+            <div class="size-4">
+              <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path
+                  d="M42.4379 44C42.4379 44 36.0744 33.9038 41.1692 24C46.8624 12.9336 42.2078 4 42.2078 4L7.01134 4C7.01134 4 11.6577 12.932 5.96912 23.9969C0.876273 33.9029 7.27094 44 7.27094 44L42.4379 44Z"
+                  fill="currentColor"
+                ></path>
+              </svg>
+            </div>
+            <h2 class="text-[#0c1c17] text-lg font-bold leading-tight tracking-[-0.015em]">ReviewTrack</h2>
+          </div>
+          <div class="flex flex-1 justify-end gap-8">
+            <div class="flex items-center gap-9">
+              <a class="text-[#0c1c17] text-sm font-medium leading-normal" href="#">Home</a>
+              <a class="text-[#0c1c17] text-sm font-medium leading-normal" href="#">Reviews</a>
+              <a class="text-[#0c1c17] text-sm font-medium leading-normal" href="#">Documents</a>
+              <a class="text-[#0c1c17] text-sm font-medium leading-normal" href="#">Reports</a>
+            </div>
+            <button
+              class="flex max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-10 bg-[#e6f4ef] text-[#0c1c17] gap-2 text-sm font-bold leading-normal tracking-[0.015em] min-w-0 px-2.5"
+            >
+              <div class="text-[#0c1c17]" data-icon="Bell" data-size="20px" data-weight="regular">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" fill="currentColor" viewBox="0 0 256 256">
+                  <path
+                    d="M221.8,175.94C216.25,166.38,208,139.33,208,104a80,80,0,1,0-160,0c0,35.34-8.26,62.38-13.81,71.94A16,16,0,0,0,48,200H88.81a40,40,0,0,0,78.38,0H208a16,16,0,0,0,13.8-24.06ZM128,216a24,24,0,0,1-22.62-16h45.24A24,24,0,0,1,128,216ZM48,184c7.7-13.24,16-43.92,16-80a64,64,0,1,1,128,0c0,36.05,8.28,66.73,16,80Z"
+                  ></path>
+                </svg>
+              </div>
+            </button>
+            <div
+              class="bg-center bg-no-repeat aspect-square bg-cover rounded-full size-10"
+              style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuANakeuKGwOVnOHVvyp4Hd9NPnLG6JWugCYAgFHtuEnlDnpyefAyna6TKfA0Pgx1KCyOXZygGqhWU0YcDKEdhMQSkpqfoODdTvHRsaB7eJ13T40-jDntgAcRdqAlTvEiIvkCk0CLVcdQG4OgwahvCX9Bwa7RYIb_L3gXx8hpFsb7F-NjJopISKTl9zqQg9R2mji73QmiwPTFQQU5a66Br0RCLSwljWAydF0fHY6X2IpAm60rnmLuct-5LPd7t0Q44v13NoG5PYW0tpA");'
+            ></div>
+          </div>
+        </header>
+        <div class="px-40 flex flex-1 justify-center py-5">
+          <div class="layout-content-container flex flex-col max-w-[960px] flex-1">
+            <div class="flex flex-wrap justify-between gap-3 p-4">
+              <p class="text-[#0c1c17] tracking-light text-[32px] font-bold leading-tight min-w-72">Document Review Dashboard</p>
+            </div>
+            <div class="flex gap-3 p-3 flex-wrap pr-4">
+              <button class="flex h-8 shrink-0 items-center justify-center gap-x-2 rounded-lg bg-[#e6f4ef] pl-4 pr-2">
+                <p class="text-[#0c1c17] text-sm font-medium leading-normal">DOC</p>
+                <div class="text-[#0c1c17]" data-icon="CaretDown" data-size="20px" data-weight="regular">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" fill="currentColor" viewBox="0 0 256 256">
+                    <path d="M213.66,101.66l-80,80a8,8,0,0,1-11.32,0l-80-80A8,8,0,0,1,53.66,90.34L128,164.69l74.34-74.35a8,8,0,0,1,11.32,11.32Z"></path>
+                  </svg>
+                </div>
+              </button>
+              <button class="flex h-8 shrink-0 items-center justify-center gap-x-2 rounded-lg bg-[#e6f4ef] pl-4 pr-2">
+                <p class="text-[#0c1c17] text-sm font-medium leading-normal">Internal Audit</p>
+                <div class="text-[#0c1c17]" data-icon="CaretDown" data-size="20px" data-weight="regular">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" fill="currentColor" viewBox="0 0 256 256">
+                    <path d="M213.66,101.66l-80,80a8,8,0,0,1-11.32,0l-80-80A8,8,0,0,1,53.66,90.34L128,164.69l74.34-74.35a8,8,0,0,1,11.32,11.32Z"></path>
+                  </svg>
+                </div>
+              </button>
+              <button class="flex h-8 shrink-0 items-center justify-center gap-x-2 rounded-lg bg-[#e6f4ef] pl-4 pr-2">
+                <p class="text-[#0c1c17] text-sm font-medium leading-normal">Instrument MDL</p>
+                <div class="text-[#0c1c17]" data-icon="CaretDown" data-size="20px" data-weight="regular">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" fill="currentColor" viewBox="0 0 256 256">
+                    <path d="M213.66,101.66l-80,80a8,8,0,0,1-11.32,0l-80-80A8,8,0,0,1,53.66,90.34L128,164.69l74.34-74.35a8,8,0,0,1,11.32,11.32Z"></path>
+                  </svg>
+                </div>
+              </button>
+              <button class="flex h-8 shrink-0 items-center justify-center gap-x-2 rounded-lg bg-[#e6f4ef] pl-4 pr-2">
+                <p class="text-[#0c1c17] text-sm font-medium leading-normal">SOP</p>
+                <div class="text-[#0c1c17]" data-icon="CaretDown" data-size="20px" data-weight="regular">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" fill="currentColor" viewBox="0 0 256 256">
+                    <path d="M213.66,101.66l-80,80a8,8,0,0,1-11.32,0l-80-80A8,8,0,0,1,53.66,90.34L128,164.69l74.34-74.35a8,8,0,0,1,11.32,11.32Z"></path>
+                  </svg>
+                </div>
+              </button>
+            </div>
+            <h2 class="text-[#0c1c17] text-[22px] font-bold leading-tight tracking-[-0.015em] px-4 pb-3 pt-5">Upcoming Reviews</h2>
+            <div class="px-4 py-3 @container">
+              <div class="flex overflow-hidden rounded-lg border border-[#cde9df] bg-[#f8fcfa]">
+                <table class="flex-1">
+                  <thead>
+                    <tr class="bg-[#f8fcfa]">
+                      <th class="table-68f23c86-bf36-4bb5-8b31-5962a946030b-column-120 px-4 py-3 text-left text-[#0c1c17] w-[400px] text-sm font-medium leading-normal">
+                        Document Title
+                      </th>
+                      <th class="table-68f23c86-bf36-4bb5-8b31-5962a946030b-column-240 px-4 py-3 text-left text-[#0c1c17] w-[400px] text-sm font-medium leading-normal">
+                        Reviewer
+                      </th>
+                      <th class="table-68f23c86-bf36-4bb5-8b31-5962a946030b-column-360 px-4 py-3 text-left text-[#0c1c17] w-[400px] text-sm font-medium leading-normal">
+                        Due Date
+                      </th>
+                      <th class="table-68f23c86-bf36-4bb5-8b31-5962a946030b-column-480 px-4 py-3 text-left text-[#0c1c17] w-60 text-sm font-medium leading-normal">Status</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr class="border-t border-t-[#cde9df]">
+                      <td class="table-68f23c86-bf36-4bb5-8b31-5962a946030b-column-120 h-[72px] px-4 py-2 w-[400px] text-[#0c1c17] text-sm font-normal leading-normal">
+                        Document A
+                      </td>
+                      <td class="table-68f23c86-bf36-4bb5-8b31-5962a946030b-column-240 h-[72px] px-4 py-2 w-[400px] text-[#46a080] text-sm font-normal leading-normal">
+                        Sophia Chen
+                      </td>
+                      <td class="table-68f23c86-bf36-4bb5-8b31-5962a946030b-column-360 h-[72px] px-4 py-2 w-[400px] text-[#46a080] text-sm font-normal leading-normal">
+                        2024-08-15
+                      </td>
+                      <td class="table-68f23c86-bf36-4bb5-8b31-5962a946030b-column-480 h-[72px] px-4 py-2 w-60 text-sm font-normal leading-normal">
+                        <button
+                          class="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-8 px-4 bg-[#e6f4ef] text-[#0c1c17] text-sm font-medium leading-normal w-full"
+                        >
+                          <span class="truncate">In Progress</span>
+                        </button>
+                      </td>
+                    </tr>
+                    <tr class="border-t border-t-[#cde9df]">
+                      <td class="table-68f23c86-bf36-4bb5-8b31-5962a946030b-column-120 h-[72px] px-4 py-2 w-[400px] text-[#0c1c17] text-sm font-normal leading-normal">
+                        Document B
+                      </td>
+                      <td class="table-68f23c86-bf36-4bb5-8b31-5962a946030b-column-240 h-[72px] px-4 py-2 w-[400px] text-[#46a080] text-sm font-normal leading-normal">
+                        Ethan Lee
+                      </td>
+                      <td class="table-68f23c86-bf36-4bb5-8b31-5962a946030b-column-360 h-[72px] px-4 py-2 w-[400px] text-[#46a080] text-sm font-normal leading-normal">
+                        2024-08-20
+                      </td>
+                      <td class="table-68f23c86-bf36-4bb5-8b31-5962a946030b-column-480 h-[72px] px-4 py-2 w-60 text-sm font-normal leading-normal">
+                        <button
+                          class="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-8 px-4 bg-[#e6f4ef] text-[#0c1c17] text-sm font-medium leading-normal w-full"
+                        >
+                          <span class="truncate">Not Started</span>
+                        </button>
+                      </td>
+                    </tr>
+                    <tr class="border-t border-t-[#cde9df]">
+                      <td class="table-68f23c86-bf36-4bb5-8b31-5962a946030b-column-120 h-[72px] px-4 py-2 w-[400px] text-[#0c1c17] text-sm font-normal leading-normal">
+                        Document C
+                      </td>
+                      <td class="table-68f23c86-bf36-4bb5-8b31-5962a946030b-column-240 h-[72px] px-4 py-2 w-[400px] text-[#46a080] text-sm font-normal leading-normal">
+                        Olivia Wong
+                      </td>
+                      <td class="table-68f23c86-bf36-4bb5-8b31-5962a946030b-column-360 h-[72px] px-4 py-2 w-[400px] text-[#46a080] text-sm font-normal leading-normal">
+                        2024-08-25
+                      </td>
+                      <td class="table-68f23c86-bf36-4bb5-8b31-5962a946030b-column-480 h-[72px] px-4 py-2 w-60 text-sm font-normal leading-normal">
+                        <button
+                          class="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-8 px-4 bg-[#e6f4ef] text-[#0c1c17] text-sm font-medium leading-normal w-full"
+                        >
+                          <span class="truncate">Not Started</span>
+                        </button>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              <style>
+                          @container(max-width:120px){.table-68f23c86-bf36-4bb5-8b31-5962a946030b-column-120{display: none;}}
+                @container(max-width:240px){.table-68f23c86-bf36-4bb5-8b31-5962a946030b-column-240{display: none;}}
+                @container(max-width:360px){.table-68f23c86-bf36-4bb5-8b31-5962a946030b-column-360{display: none;}}
+                @container(max-width:480px){.table-68f23c86-bf36-4bb5-8b31-5962a946030b-column-480{display: none;}}
+              </style>
+            </div>
+            <h2 class="text-[#0c1c17] text-[22px] font-bold leading-tight tracking-[-0.015em] px-4 pb-3 pt-5">Overdue Reviews</h2>
+            <div class="px-4 py-3 @container">
+              <div class="flex overflow-hidden rounded-lg border border-[#cde9df] bg-[#f8fcfa]">
+                <table class="flex-1">
+                  <thead>
+                    <tr class="bg-[#f8fcfa]">
+                      <th class="table-d53e76f6-db1e-4613-8c17-222dd4fa04ba-column-120 px-4 py-3 text-left text-[#0c1c17] w-[400px] text-sm font-medium leading-normal">
+                        Document Title
+                      </th>
+                      <th class="table-d53e76f6-db1e-4613-8c17-222dd4fa04ba-column-240 px-4 py-3 text-left text-[#0c1c17] w-[400px] text-sm font-medium leading-normal">
+                        Reviewer
+                      </th>
+                      <th class="table-d53e76f6-db1e-4613-8c17-222dd4fa04ba-column-360 px-4 py-3 text-left text-[#0c1c17] w-[400px] text-sm font-medium leading-normal">
+                        Due Date
+                      </th>
+                      <th class="table-d53e76f6-db1e-4613-8c17-222dd4fa04ba-column-480 px-4 py-3 text-left text-[#0c1c17] w-60 text-sm font-medium leading-normal">Status</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr class="border-t border-t-[#cde9df]">
+                      <td class="table-d53e76f6-db1e-4613-8c17-222dd4fa04ba-column-120 h-[72px] px-4 py-2 w-[400px] text-[#0c1c17] text-sm font-normal leading-normal">
+                        Document X
+                      </td>
+                      <td class="table-d53e76f6-db1e-4613-8c17-222dd4fa04ba-column-240 h-[72px] px-4 py-2 w-[400px] text-[#46a080] text-sm font-normal leading-normal">
+                        Nathaniel Tan
+                      </td>
+                      <td class="table-d53e76f6-db1e-4613-8c17-222dd4fa04ba-column-360 h-[72px] px-4 py-2 w-[400px] text-[#46a080] text-sm font-normal leading-normal">
+                        2024-07-20
+                      </td>
+                      <td class="table-d53e76f6-db1e-4613-8c17-222dd4fa04ba-column-480 h-[72px] px-4 py-2 w-60 text-sm font-normal leading-normal">
+                        <button
+                          class="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-8 px-4 bg-[#e6f4ef] text-[#0c1c17] text-sm font-medium leading-normal w-full"
+                        >
+                          <span class="truncate">Overdue</span>
+                        </button>
+                      </td>
+                    </tr>
+                    <tr class="border-t border-t-[#cde9df]">
+                      <td class="table-d53e76f6-db1e-4613-8c17-222dd4fa04ba-column-120 h-[72px] px-4 py-2 w-[400px] text-[#0c1c17] text-sm font-normal leading-normal">
+                        Document Y
+                      </td>
+                      <td class="table-d53e76f6-db1e-4613-8c17-222dd4fa04ba-column-240 h-[72px] px-4 py-2 w-[400px] text-[#46a080] text-sm font-normal leading-normal">
+                        Isabella Lim
+                      </td>
+                      <td class="table-d53e76f6-db1e-4613-8c17-222dd4fa04ba-column-360 h-[72px] px-4 py-2 w-[400px] text-[#46a080] text-sm font-normal leading-normal">
+                        2024-07-15
+                      </td>
+                      <td class="table-d53e76f6-db1e-4613-8c17-222dd4fa04ba-column-480 h-[72px] px-4 py-2 w-60 text-sm font-normal leading-normal">
+                        <button
+                          class="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-8 px-4 bg-[#e6f4ef] text-[#0c1c17] text-sm font-medium leading-normal w-full"
+                        >
+                          <span class="truncate">Overdue</span>
+                        </button>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              <style>
+                          @container(max-width:120px){.table-d53e76f6-db1e-4613-8c17-222dd4fa04ba-column-120{display: none;}}
+                @container(max-width:240px){.table-d53e76f6-db1e-4613-8c17-222dd4fa04ba-column-240{display: none;}}
+                @container(max-width:360px){.table-d53e76f6-db1e-4613-8c17-222dd4fa04ba-column-360{display: none;}}
+                @container(max-width:480px){.table-d53e76f6-db1e-4613-8c17-222dd4fa04ba-column-480{display: none;}}
+              </style>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
 </html>

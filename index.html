@@ -89,41 +89,28 @@
             <div class="flex flex-wrap justify-between gap-3 p-4">
               <p class="text-[#0c1c17] tracking-light text-[32px] font-bold leading-tight min-w-72">Document Review Dashboard</p>
             </div>
-            <div class="flex gap-3 p-3 flex-wrap pr-4 items-center">
-              <button class="review-filter-btn flex h-8 shrink-0 items-center justify-center gap-x-2 rounded-lg bg-[#e6f4ef] pl-4 pr-2">
-                <p class="text-[#0c1c17] text-sm font-medium leading-normal">DOC</p>
-                <div class="text-[#0c1c17]" data-icon="CaretDown" data-size="20px" data-weight="regular">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" fill="currentColor" viewBox="0 0 256 256">
-                    <path d="M213.66,101.66l-80,80a8,8,0,0,1-11.32,0l-80-80A8,8,0,0,1,53.66,90.34L128,164.69l74.34-74.35a8,8,0,0,1,11.32,11.32Z"></path>
-                  </svg>
-                </div>
-              </button>
-              <button class="review-filter-btn flex h-8 shrink-0 items-center justify-center gap-x-2 rounded-lg bg-[#e6f4ef] pl-4 pr-2">
-                <p class="text-[#0c1c17] text-sm font-medium leading-normal">Internal Audit</p>
-                <div class="text-[#0c1c17]" data-icon="CaretDown" data-size="20px" data-weight="regular">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" fill="currentColor" viewBox="0 0 256 256">
-                    <path d="M213.66,101.66l-80,80a8,8,0,0,1-11.32,0l-80-80A8,8,0,0,1,53.66,90.34L128,164.69l74.34-74.35a8,8,0,0,1,11.32,11.32Z"></path>
-                  </svg>
-                </div>
-              </button>
-              <button class="review-filter-btn flex h-8 shrink-0 items-center justify-center gap-x-2 rounded-lg bg-[#e6f4ef] pl-4 pr-2">
-                <p class="text-[#0c1c17] text-sm font-medium leading-normal">Instrument MDL</p>
-                <div class="text-[#0c1c17]" data-icon="CaretDown" data-size="20px" data-weight="regular">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" fill="currentColor" viewBox="0 0 256 256">
-                    <path d="M213.66,101.66l-80,80a8,8,0,0,1-11.32,0l-80-80A8,8,0,0,1,53.66,90.34L128,164.69l74.34-74.35a8,8,0,0,1,11.32,11.32Z"></path>
-                  </svg>
-                </div>
-              </button>
-              <button class="review-filter-btn flex h-8 shrink-0 items-center justify-center gap-x-2 rounded-lg bg-[#e6f4ef] pl-4 pr-2">
-                <p class="text-[#0c1c17] text-sm font-medium leading-normal">SOP</p>
-                <div class="text-[#0c1c17]" data-icon="CaretDown" data-size="20px" data-weight="regular">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" fill="currentColor" viewBox="0 0 256 256">
-                    <path d="M213.66,101.66l-80,80a8,8,0,0,1-11.32,0l-80-80A8,8,0,0,1,53.66,90.34L128,164.69l74.34-74.35a8,8,0,0,1,11.32,11.32Z"></path>
-                  </svg>
-                </div>
-              </button>
-              <button id="clearFilterBtn" class="flex h-8 shrink-0 items-center justify-center rounded-lg bg-[#019863] text-white px-4 text-sm font-medium">Show All</button>
+            <!-- New Filter Inputs Section -->
+            <div class="flex gap-4 p-4 items-center flex-wrap">
+              <input 
+                type="text" 
+                id="filterTitle" 
+                placeholder="Filter by Document Title" 
+                class="shadow appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline flex-grow md:flex-grow-0">
+              <input 
+                type="text" 
+                id="filterReviewer" 
+                placeholder="Filter by Reviewer" 
+                class="shadow appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline flex-grow md:flex-grow-0">
+              <select 
+                id="filterStatus" 
+                class="shadow appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline flex-grow md:flex-grow-0">
+                <option value="All" selected>All Statuses</option>
+                <option value="Not Started">Not Started</option>
+                <option value="In Progress">In Progress</option>
+                <option value="Overdue">Overdue</option>
+              </select>
             </div>
+            <!-- End New Filter Inputs Section -->
             <h2 class="text-[#0c1c17] text-[22px] font-bold leading-tight tracking-[-0.015em] px-4 pb-3 pt-5">Upcoming Reviews</h2>
             <div class="px-4 py-3 @container">
               <div class="flex overflow-hidden rounded-lg border border-[#cde9df] bg-[#f8fcfa]">
@@ -272,80 +259,7 @@
                 @container(max-width:480px){.table-d53e76f6-db1e-4613-8c17-222dd4fa04ba-column-480{display: none;}}
               </style>
             </div>
-
-            <!-- New Management Section -->
-            <div class="management-section p-4">
-              <h2 class="text-[#0c1c17] text-[22px] font-bold leading-tight tracking-[-0.015em] pb-3 pt-5">Employee Management</h2>
-              <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div>
-                  <form id="addEmployeeForm" class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
-                    <div class="mb-4">
-                      <label class="block text-gray-700 text-sm font-bold mb-2" for="employeeName">
-                        Employee Name
-                      </label>
-                      <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="employeeName" type="text" placeholder="Employee Name">
-                    </div>
-                    <div class="flex items-center justify-between">
-                      <button class="bg-[#019863] hover:bg-[#017a50] text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" type="submit">
-                        Add Employee
-                      </button>
-                    </div>
-                  </form>
-                </div>
-                <div class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
-                  <h3 class="text-[#0c1c17] text-lg font-semibold mb-4">Employee List</h3>
-                  <ul id="employeeList" class="list-none">
-                    <!-- Employee list will be populated by main.js -->
-                    <!-- LI elements styled by main.js: mb-1 p-1 border-b border-gray-200 text-gray-700 -->
-                    <!-- Consider updating LI styling in main.js to py-2 px-3 for consistency -->
-                  </ul>
-                </div>
-              </div>
-
-              <h2 class="text-[#0c1c17] text-[22px] font-bold leading-tight tracking-[-0.015em] pb-3 pt-5">Assign Task/Review</h2>
-              <form id="assignTaskForm" class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
-                <div class="mb-4">
-                  <label class="block text-gray-700 text-sm font-bold mb-2" for="employeeSelectForTask">
-                    Assign To
-                  </label>
-                  <select id="employeeSelectForTask" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
-                    <option value="" disabled selected>Select Employee</option>
-                    <!-- Options will be populated by main.js -->
-                  </select>
-                </div>
-                <div class="mb-4">
-                  <label class="block text-gray-700 text-sm font-bold mb-2" for="taskTitle">
-                    Review Title
-                  </label>
-                  <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="taskTitle" type="text" placeholder="Review Title">
-                </div>
-                <div class="mb-4">
-                  <label class="block text-gray-700 text-sm font-bold mb-2" for="taskTypeSelect">
-                    Review Type
-                  </label>
-                  <select id="taskTypeSelect" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
-                    <option value="" disabled selected>Select Review Type</option>
-                    <!-- Options can be added here or populated by main.js -->
-                    <option value="SOP">SOP</option>
-                    <option value="Internal Audit">Internal Audit</option>
-                    <option value="Instrument MDL">Instrument MDL</option>
-                    <option value="DOC">DOC</option>
-                  </select>
-                </div>
-                <div class="mb-4">
-                  <label class="block text-gray-700 text-sm font-bold mb-2" for="taskDueDate">
-                    Due Date
-                  </label>
-                  <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="taskDueDate" type="date">
-                </div>
-                <div class="flex items-center justify-between">
-                  <button class="bg-[#019863] hover:bg-[#017a50] text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" type="submit">
-                    Assign Review
-                  </button>
-                </div>
-              </form>
-            </div>
-            <!-- End New Management Section -->
+            <!-- Employee Management and Task Assignment sections removed -->
           </div>
         </div>
       </div>

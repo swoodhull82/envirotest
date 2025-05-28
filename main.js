@@ -3,36 +3,22 @@ document.addEventListener('DOMContentLoaded', () => {
   const upcomingReviewsTbody = document.querySelectorAll('.layout-content-container table tbody')[0];
   const overdueReviewsTbody = document.querySelectorAll('.layout-content-container table tbody')[1];
   
-  // Add Employee Form elements
-  const addEmployeeForm = document.getElementById('addEmployeeForm');
-  const employeeNameInput = document.getElementById('employeeName');
-  if (!employeeNameInput) console.error('Employee Name Input element (employeeName) not found!');
-  const employeeListUL = document.getElementById('employeeList');
+  // Variables for new filter inputs
+  const filterTitleInput = document.getElementById('filterTitle');
+  const filterReviewerInput = document.getElementById('filterReviewer');
+  const filterStatusSelect = document.getElementById('filterStatus');
 
-  // Assign Task Form elements
-  const assignTaskForm = document.getElementById('assignTaskForm');
-  const employeeSelectForTask = document.getElementById('employeeSelectForTask');
-  const taskTitleInput = document.getElementById('taskTitle');
-  // Corrected ID to match HTML
-  const taskTypeSelect = document.getElementById('taskTypeSelect'); 
-  const taskDueDateInput = document.getElementById('taskDueDate');
-  let newReviewTypeInput = null; // To store the dynamically created input field
-  let currentFilterType = "All"; // To store the current filter type
+  // Null checks for new filter elements
+  if (!filterTitleInput) console.error('Filter Title Input element (filterTitle) not found!');
+  if (!filterReviewerInput) console.error('Filter Reviewer Input element (filterReviewer) not found!');
+  if (!filterStatusSelect) console.error('Filter Status Select element (filterStatus) not found!');
 
-  // Filter buttons
-  const filterButtons = document.querySelectorAll('.review-filter-btn');
-  const clearFilterButton = document.getElementById('clearFilterBtn');
-
-  // Basic null checks for critical elements
-  if (!employeeListUL) console.error('Employee list UL element (employeeList) not found!');
-  if (!addEmployeeForm) console.error('Add Employee Form (addEmployeeForm) not found!');
-  if (!assignTaskForm) console.error('Assign Task Form (assignTaskForm) not found!');
-  if (!employeeSelectForTask) console.error('Employee Select for Task (employeeSelectForTask) not found!');
-  if (!taskTitleInput) console.error('Task Title Input (taskTitle) not found!');
-  // Corrected ID in the error message as well
-  if (!taskTypeSelect) console.error('Task Type Select (taskTypeSelect) not found!'); 
-  if (!taskDueDateInput) console.error('Task Due Date Input (taskDueDate) not found!');
-
+  // Global variables to store current filter values
+  let currentTitleFilter = '';
+  let currentReviewerFilter = '';
+  let currentStatusFilter = 'All';
+  
+  // Old DOM element variables removed
 
   let appData = { employees: [] }; // Global store for application data
 
@@ -47,28 +33,20 @@ document.addEventListener('DOMContentLoaded', () => {
       if (!appData.employees || !Array.isArray(appData.employees)) {
         console.error('No employees data found or data is not in expected format.');
         displayErrorMessageInTables('Error: Employee data is missing or invalid.');
-        if (employeeListUL) displayEmployees([]);
-        if (employeeSelectForTask) populateEmployeeSelect([]);
-        // Ensure task type select is also handled in error case
-        if (taskTypeSelect) populateTaskTypeSelect([]);
+        // Removed calls to displayEmployees, populateEmployeeSelect, populateTaskTypeSelect
         return;
       }
-      processAndDisplayReviews(appData.employees, currentFilterType); // Pass currentFilterType
-      if (employeeListUL) displayEmployees(appData.employees);
-      if (employeeSelectForTask) populateEmployeeSelect(appData.employees);
-      // Populate task types dropdown
-      if (taskTypeSelect) populateTaskTypeSelect(appData.employees);
+      processAndDisplayReviews(appData.employees); // Simplified call
+      // Removed calls to displayEmployees, populateEmployeeSelect, populateTaskTypeSelect
 
     } catch (error) {
       console.error('Error fetching or processing review data:', error);
       displayErrorMessageInTables('Error loading review data.');
-      if (employeeListUL) displayEmployees([]);
-      if (employeeSelectForTask) populateEmployeeSelect([]);
-      if (taskTypeSelect) populateTaskTypeSelect([]); // Also handle error case for task types
+      // Removed calls to displayEmployees, populateEmployeeSelect, populateTaskTypeSelect
     }
   }
 
-  function processAndDisplayReviews(employees, filterType = "All") {
+  function processAndDisplayReviews(employees) { // Signature updated
     const allUpcomingTasks = [];
     const allOverdueTasks = [];
     const today = new Date();
@@ -83,10 +61,18 @@ document.addEventListener('DOMContentLoaded', () => {
     employees.forEach(employee => {
       if (employee.assigned_tasks && Array.isArray(employee.assigned_tasks)) {
         employee.assigned_tasks.forEach(task => {
-          if (task.status === 'Completed') return;
+          if (task.status === 'Completed') return; // Do not display completed tasks
 
-          // Apply filter
-          if (filterType !== "All" && task.type !== filterType) return;
+          // Apply new filters
+          if (currentTitleFilter && !task.title.toLowerCase().includes(currentTitleFilter)) {
+            return;
+          }
+          if (currentReviewerFilter && !employee.name.toLowerCase().includes(currentReviewerFilter)) {
+            return;
+          }
+          if (currentStatusFilter !== 'All' && task.status !== currentStatusFilter) {
+            return;
+          }
           
           const taskWithReviewer = { ...task, reviewer: employee.name };
           const dueDate = new Date(task.dueDate);
@@ -111,108 +97,9 @@ document.addEventListener('DOMContentLoaded', () => {
     if (overdueReviewsTbody) overdueReviewsTbody.innerHTML = errorRow;
   }
 
-  function displayEmployees(employeesData) {
-    if (!employeeListUL) return;
-    employeeListUL.innerHTML = '';
-    if (!employeesData || employeesData.length === 0) {
-      const li = document.createElement('li');
-      li.textContent = 'No employees to display.';
-      li.className = 'text-gray-500 p-1';
-      employeeListUL.appendChild(li);
-      return;
-    }
-    employeesData.forEach(employee => {
-      const li = document.createElement('li');
-      li.textContent = employee.name;
-      li.className = 'mb-1 p-1 border-b border-gray-200 text-gray-700'; 
-      employeeListUL.appendChild(li);
-    });
-  }
-
-  function populateEmployeeSelect(employeesData) {
-    if (!employeeSelectForTask) return;
-    const currentValue = employeeSelectForTask.value; // Preserve current selection if possible
-    employeeSelectForTask.innerHTML = ''; // Clear existing options
-
-    const defaultOption = document.createElement('option');
-    defaultOption.value = "";
-    defaultOption.textContent = "Select an employee";
-    defaultOption.disabled = true;
-    // Do not select it by default if there's a value to preserve, 
-    // unless the value is no longer valid.
-    defaultOption.selected = !currentValue; 
-    employeeSelectForTask.appendChild(defaultOption);
-
-    let valueExists = false;
-    if (employeesData && employeesData.length > 0) {
-      employeesData.forEach(employee => {
-        const option = document.createElement('option');
-        option.value = employee.id;
-        option.textContent = employee.name;
-        employeeSelectForTask.appendChild(option);
-        if (employee.id === currentValue) {
-          valueExists = true;
-        }
-      });
-    }
-    // If the previously selected value still exists, re-select it.
-    if (valueExists) {
-      employeeSelectForTask.value = currentValue;
-    } else {
-        // If the previous value is no longer valid (e.g. employee deleted), select the default.
-        employeeSelectForTask.value = ""; 
-    }
-  }
-
-  function populateTaskTypeSelect(employeesData) {
-    if (!taskTypeSelect) return;
-    
-    const existingOptionsFromHtml = Array.from(taskTypeSelect.querySelectorAll('option'))
-                                      .filter(option => option.value && option.value !== "" && option.value !== "add_new_type")
-                                      .map(option => option.value);
-
-    let uniqueTaskTypes = new Set(existingOptionsFromHtml);
-
-    if (employeesData && employeesData.length > 0) {
-      employeesData.forEach(employee => {
-        if (employee.assigned_tasks && Array.isArray(employee.assigned_tasks)) {
-          employee.assigned_tasks.forEach(task => {
-            if (task.type) {
-              uniqueTaskTypes.add(task.type);
-            }
-          });
-        }
-      });
-    }
-
-    // Preserve current selection if possible
-    const currentSelectedValue = taskTypeSelect.value; 
-
-    // Clear existing options except the default "Select Review Type"
-    while (taskTypeSelect.options.length > 1) {
-        taskTypeSelect.remove(1);
-    }
-    
-    uniqueTaskTypes.forEach(type => {
-      const option = document.createElement('option');
-      option.value = type;
-      option.textContent = type;
-      taskTypeSelect.appendChild(option);
-    });
-
-    const addNewOption = document.createElement('option');
-    addNewOption.value = "add_new_type";
-    addNewOption.textContent = "Add New Type...";
-    taskTypeSelect.appendChild(addNewOption);
-
-    // Restore selection if possible
-    if (Array.from(taskTypeSelect.options).some(opt => opt.value === currentSelectedValue)) {
-        taskTypeSelect.value = currentSelectedValue;
-    } else {
-        taskTypeSelect.value = ""; // Default to "Select Review Type"
-    }
-  }
-
+  // Removed displayEmployees function
+  // Removed populateEmployeeSelect function
+  // Removed populateTaskTypeSelect function
 
   function populateTable(tableBody, reviews) {
     if (!tableBody) return;

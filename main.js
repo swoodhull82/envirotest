@@ -6,6 +6,7 @@ document.addEventListener('DOMContentLoaded', () => {
   // Add Employee Form elements
   const addEmployeeForm = document.getElementById('addEmployeeForm');
   const employeeNameInput = document.getElementById('employeeName');
+  if (!employeeNameInput) console.error('Employee Name Input element (employeeName) not found!');
   const employeeListUL = document.getElementById('employeeList');
 
   // Assign Task Form elements
@@ -388,28 +389,8 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // Event listener for task type select change
-  if (taskTypeSelect) {
-    taskTypeSelect.addEventListener('change', (event) => {
-      if (event.target.value === 'add_new_type') {
-        if (!newReviewTypeInput) {
-          newReviewTypeInput = document.createElement('input');
-          newReviewTypeInput.type = 'text';
-          newReviewTypeInput.id = 'newReviewTypeInput';
-          newReviewTypeInput.placeholder = 'Enter new review type';
-          newReviewTypeInput.className = 'shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline mt-2';
-          // Insert after the select element's parent or a more specific container if available
-          taskTypeSelect.parentNode.insertBefore(newReviewTypeInput, taskTypeSelect.nextSibling);
-        }
-        newReviewTypeInput.style.display = 'block';
-        newReviewTypeInput.focus();
-      } else {
-        if (newReviewTypeInput) {
-          newReviewTypeInput.style.display = 'none';
-        }
-      }
-    });
-  }
+  // Event listener for task type select change is already present above (around line 350-370 in the previous version)
+  // The duplicate one that was here (around original lines 372-392) is now removed.
 
   // --- Filter Functionality ---
   function updateActiveFilterButtonUI(activeButton) {

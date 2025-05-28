@@ -113,6 +113,78 @@
               </select>
             </div>
             <!-- End New Filter Inputs Section -->
+
+            <!-- New Document Actions Section -->
+            <div class="document-actions p-4">
+              <h3 class="text-[#0c1c17] text-lg font-semibold mb-4">Add New Review Document</h3>
+              <form id="addDocumentForm" class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
+                <div class="mb-4">
+                  <label class="block text-gray-700 text-sm font-bold mb-2" for="newDocTitle">
+                    Document Title
+                  </label>
+                  <input type="text" id="newDocTitle" placeholder="Enter document title" required class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+                </div>
+                <div class="mb-4">
+                  <label class="block text-gray-700 text-sm font-bold mb-2" for="newDocReviewerSelect">
+                    Assign to Reviewer
+                  </label>
+                  <select id="newDocReviewerSelect" required class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+                    <option value="" disabled selected>Select Reviewer</option>
+                    <!-- Options will be populated by JavaScript -->
+                  </select>
+                </div>
+                <div class="mb-4">
+                  <label class="block text-gray-700 text-sm font-bold mb-2" for="newDocDueDate">
+                    Due Date
+                  </label>
+                  <input type="date" id="newDocDueDate" required class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+                </div>
+                <div class="flex items-center justify-start">
+                  <button type="submit" class="bg-[#019863] hover:bg-[#017a50] text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
+                    Add Document
+                  </button>
+                </div>
+              </form>
+
+              <hr class="my-8 border-gray-300"> <!-- Separator -->
+
+              <h3 class="text-[#0c1c17] text-lg font-semibold mb-4">Add New Reviewer</h3>
+              <form id="addReviewerForm" class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
+                <div class="mb-4">
+                  <label class="block text-gray-700 text-sm font-bold mb-2" for="newReviewerName">
+                    Reviewer Name
+                  </label>
+                  <input type="text" id="newReviewerName" placeholder="Enter new reviewer name" required class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+                </div>
+                <div class="flex items-center justify-start">
+                  <button type="submit" class="bg-[#019863] hover:bg-[#017a50] text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
+                    Add Reviewer
+                  </button>
+                </div>
+              </form>
+
+              <hr class="my-8 border-gray-300"> <!-- Separator -->
+
+              <h3 class="text-[#0c1c17] text-lg font-semibold mb-4">Remove Reviewer</h3>
+              <div id="removeReviewerSection" class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
+                <div class="mb-4">
+                  <label class="block text-gray-700 text-sm font-bold mb-2" for="removeReviewerSelect">
+                    Select Reviewer to Remove
+                  </label>
+                  <select id="removeReviewerSelect" required class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mb-2 leading-tight focus:outline-none focus:shadow-outline">
+                    <option value="" disabled selected>Select Reviewer</option>
+                    <!-- Options will be populated by JavaScript -->
+                  </select>
+                </div>
+                <div class="flex items-center justify-start">
+                  <button id="removeReviewerButton" class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
+                    Remove Selected Reviewer
+                  </button>
+                </div>
+              </div>
+            </div>
+            <!-- End New Document Actions Section -->
+
             <h2 class="text-[#0c1c17] text-[22px] font-bold leading-tight tracking-[-0.015em] px-4 pb-3 pt-5">Upcoming Reviews</h2>
             <div class="px-4 py-3 @container">
               <div class="flex overflow-hidden rounded-lg border border-[#cde9df] bg-[#f8fcfa]">

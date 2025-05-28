@@ -1,1 +1,43 @@
-/* Add styles here */
+/* In style.css */
+.has-due-date span { /* Target the span containing the day number */
+  background-color: #ef4444 !important; /* Tailwind's red-500 */
+  color: white !important; /* Ensure text is readable */
+  /* border-radius, padding, width, height, line-height, text-align are already handled by Tailwind on the span or dayNumberSpan's base classes if it's today */
+}
+
+/* Ensure the .has-due-date styling overrides the .today styling if they coincide */
+.has-due-date.today span, /* If the cell is today and has a due date */
+.has-due-date span { /* General case for due dates */
+  background-color: #ef4444 !important; /* red-500 */
+  color: white !important;
+}
+
+/* Optional: if the cell itself needs a different background for due dates, not just the number */
+/*
+.has-due-date {
+  background-color: #fee2e2; // Tailwind's red-100
+}
+*/
+
+/* Styling for the day number span, especially when it's 'today' or 'has-due-date' */
+/* The base styling is applied in JS, but these ensure consistency for the circle */
+.calendar-day-number {
+  display: inline-block;
+  width: 1.75rem; /* w-7 */
+  height: 1.75rem; /* h-7 */
+  line-height: 1.75rem; /* Adjust to vertically center, might be same as height */
+  text-align: center;
+  border-radius: 9999px; /* rounded-full */
+}
+
+/* Today's date styling (if not a due date) */
+.today .calendar-day-number {
+  background-color: #14b8a6; /* teal-500 */
+  color: white;
+}
+
+/* Styling for due date numbers */
+.has-due-date .calendar-day-number {
+  background-color: #ef4444 !important; /* red-500, ensure it overrides 'today' */
+  color: white !important;
+}

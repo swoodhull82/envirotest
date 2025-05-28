@@ -8,7 +8,7 @@
       href="https://fonts.googleapis.com/css2?display=swap&amp;family=Noto+Sans%3Awght%40400%3B500%3B700%3B900&amp;family=Plus+Jakarta+Sans%3Awght%40400%3B500%3B700%3B800"
     />
 
-    <title>Document Review Details - ReviewTrack</title>
+    <title>Stitch Design</title>
     <link rel="icon" type="image/x-icon" href="data:image/x-icon;base64," />
 
     <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
@@ -30,12 +30,10 @@
           </div>
           <div class="flex flex-1 justify-end gap-8">
             <div class="flex items-center gap-9">
-              <a class="text-[#0c1c17] text-sm font-medium leading-normal" href="index.html">Home</a>
-              <a class="text-[#0c1c17] text-sm font-medium leading-normal" href="dashboard.html">Dashboard</a>
-              <a class="text-[#0c1c17] text-sm font-medium leading-normal" href="reminders.html">Reminders</a>
-              <a class="text-[#0c1c17] text-sm font-medium leading-normal" href="calendar.html">Calendar</a>
-              <a class="text-[#0c1c17] text-sm font-medium leading-normal" href="document_review_assignments.html">Assignments</a>
-              <a class="text-[#0c1c17] text-sm font-medium leading-normal" href="settings.html">Settings</a>
+              <a class="text-[#0c1c17] text-sm font-medium leading-normal" href="#">Dashboard</a>
+              <a class="text-[#0c1c17] text-sm font-medium leading-normal" href="#">Reviews</a>
+              <a class="text-[#0c1c17] text-sm font-medium leading-normal" href="#">Documents</a>
+              <a class="text-[#0c1c17] text-sm font-medium leading-normal" href="#">People</a>
             </div>
             <button
               class="flex max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-10 bg-[#e6f4ef] text-[#0c1c17] gap-2 text-sm font-bold leading-normal tracking-[0.015em] min-w-0 px-2.5"
@@ -50,20 +48,135 @@
             </button>
             <div
               class="bg-center bg-no-repeat aspect-square bg-cover rounded-full size-10"
-              style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuANakeuKGwOVnOHVvyp4Hd9NPnLG6JWugCYAgFHtuEnlDnpyefAyna6TKfA0Pgx1KCyOXZygGqhWU0YcDKEdhMQSkpqfoODdTvHRsaB7eJ13T40-jDntgAcRdqAlTvEiIvkCk0CLVcdQG4OgwahvCX9Bwa7RYIb_L3gXx8hpFsb7F-NjJopISKTl9zqQg9R2mji73QmiwPTFQQU5a66Br0RCLSwljWAydF0fHY6X2IpAm60rnmLuct-5LPd7t0Q44v13NoG5PYW0tpA");'
+              style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuBM92CxPi9j1mYtNU72MmMee5KXkexYzl5fvVSpZsKHwh9So3ssM5aCSYF8MBqoI7j8V7R9176vEQUzJQabpChIsARSYKKxaBKz5SCfCat7WcINEJMiWQhopxnDQTjI1p0bY5_8nZHvsfT39B3iRVM2yKmtq2BT_c-OnWWSzCoRE_IHdbwbmq98giBMfwVl0lHYw_5kaYQ3Mv9ZtHDaKRIE1w-kiYN_HX19NEE1n8OaYy3YSeBa8wKLl3VNG8xD40b9vMTML55Jot_s");'
             ></div>
           </div>
         </header>
-        <div class="px-40 flex flex-1 justify-center py-5">
-          <div class="layout-content-container flex flex-col max-w-[960px] flex-1">
-            <h1 class="text-[#0c1c17] text-3xl font-bold p-4">Document Review Details</h1>
-            <div id="taskDetailsContainer" class="p-4 space-y-2">
-              <!-- Task details will be populated here by JavaScript -->
+        <div class="gap-1 px-6 flex flex-1 justify-center py-5">
+          <div class="layout-content-container flex flex-col max-w-[920px] flex-1">
+            <div class="flex flex-wrap gap-2 p-4">
+              <a class="text-[#46a080] text-base font-medium leading-normal" href="#">Reviews</a>
+              <span class="text-[#46a080] text-base font-medium leading-normal">/</span>
+              <span class="text-[#0c1c17] text-base font-medium leading-normal">Review Details</span>
+            </div>
+            <div class="flex flex-wrap justify-between gap-3 p-4">
+              <div class="flex min-w-72 flex-col gap-3">
+                <p class="text-[#0c1c17] tracking-light text-[32px] font-bold leading-tight">Review of 'Project Alpha - Phase 1 Report'</p>
+                <p class="text-[#46a080] text-sm font-normal leading-normal">Assigned to Alex Chen</p>
+              </div>
+            </div>
+            <h2 class="text-[#0c1c17] text-[22px] font-bold leading-tight tracking-[-0.015em] px-4 pb-3 pt-5">Review Details</h2>
+            <div class="p-4 grid grid-cols-[20%_1fr] gap-x-6">
+              <div class="col-span-2 grid grid-cols-subgrid border-t border-t-[#cde9df] py-5">
+                <p class="text-[#46a080] text-sm font-normal leading-normal">Due Date</p>
+                <p class="text-[#0c1c17] text-sm font-normal leading-normal">July 15, 2024</p>
+              </div>
+              <div class="col-span-2 grid grid-cols-subgrid border-t border-t-[#cde9df] py-5">
+                <p class="text-[#46a080] text-sm font-normal leading-normal">Assignee</p>
+                <p class="text-[#0c1c17] text-sm font-normal leading-normal">Alex Chen</p>
+              </div>
+              <div class="col-span-2 grid grid-cols-subgrid border-t border-t-[#cde9df] py-5">
+                <p class="text-[#46a080] text-sm font-normal leading-normal">Last Review Date</p>
+                <p class="text-[#0c1c17] text-sm font-normal leading-normal">June 20, 2024</p>
+              </div>
+              <div class="col-span-2 grid grid-cols-subgrid border-t border-t-[#cde9df] py-5">
+                <p class="text-[#46a080] text-sm font-normal leading-normal">Status</p>
+                <p class="text-[#0c1c17] text-sm font-normal leading-normal">In Progress</p>
+              </div>
+            </div>
+            <h2 class="text-[#0c1c17] text-[22px] font-bold leading-tight tracking-[-0.015em] px-4 pb-3 pt-5">Review History</h2>
+            <div class="grid grid-cols-[40px_1fr] gap-x-2 px-4">
+              <div class="flex flex-col items-center gap-1 pt-3">
+                <div
+                  class="bg-center bg-no-repeat aspect-square bg-cover rounded-full size-6"
+                  style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuA468-t4B7ZtWJ22yK0DiwEfNf6bJP0gIsgii_O1o496CBBecQdY_2o-Qmchnw3hHBK6_k70Iz_VS4H7bU7daBcXO5lpt9Ohi7x-ASuUY1LvKRK6KPgBPNXq2tQ_qhoig45d5pZvU1D9TjsQhEuC2LmiqHLZAhY1dR3HbU3ufpRIOExhMtDcKXNoRI4WdZ2KM4qQ8C2CUj8ef8o9yFf4Vk-27VofZB2XilYRLLnUKRStce3XZmgBypnMHifQveucd58AKxNc4YA4NQG");'
+                ></div>
+                <div class="w-[1.5px] bg-[#cde9df] h-2 grow"></div>
+              </div>
+              <div class="flex flex-1 flex-col py-3">
+                <p class="text-[#0c1c17] text-base font-medium leading-normal">Review Assigned</p>
+                <p class="text-[#46a080] text-base font-normal leading-normal">June 15, 2024</p>
+              </div>
+              <div class="flex flex-col items-center gap-1">
+                <div class="w-[1.5px] bg-[#cde9df] h-2"></div>
+                <div
+                  class="bg-center bg-no-repeat aspect-square bg-cover rounded-full size-6"
+                  style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuD5L4ECPisTi_wX549Vk0_AdKeHWdq_t_ozB1P8Qp4zD-comnEyI0SfvNs85ZLrdJgQBBCWfq4-bw0Abv50jsc9EONZAqjNKll3boOXjLmMJqGLY83vDb2osh4RRrvuELA6uSr9yowAvgC2XFaUdvEVkQMVB4YIqOj4Xyr1JWSecIWQXt8RWGBLmcwJlZUBCntmx1XRH0ZMTGWmS9mLJJyBF2EG67ZsRFGxYtx06lMjSHqzr1sOK0OWpqjvYZOCbico9LKyGgSPIzCh");'
+                ></div>
+                <div class="w-[1.5px] bg-[#cde9df] h-2 grow"></div>
+              </div>
+              <div class="flex flex-1 flex-col py-3">
+                <p class="text-[#0c1c17] text-base font-medium leading-normal">Review Started</p>
+                <p class="text-[#46a080] text-base font-normal leading-normal">June 18, 2024</p>
+              </div>
+              <div class="flex flex-col items-center gap-1 pb-3">
+                <div class="w-[1.5px] bg-[#cde9df] h-2"></div>
+                <div
+                  class="bg-center bg-no-repeat aspect-square bg-cover rounded-full size-6"
+                  style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuDU8alvNCy0rJTdnlaiIgBZ1uQii2x4TG7uDmHWThlyvU04DFQEitf--n97PFFUaB63PO9zmEp3ctj08JR1z1cmuamfRpzNeYXZmwMJ53vognJhsZXFK8at6eXWhMKShFvVMRM_F0vGSh2HyuSTzUSslL663Np7tKrjfp8vzK-LOL3lVzjIm62x1WhhnnjpuWrXOiUqydp99timozXM-Ghylb40Q3YY3kNAILdWN7jn2aLN9ATk89U8CEFsloTOVD1gBrindDqpfrve");'
+                ></div>
+              </div>
+              <div class="flex flex-1 flex-col py-3">
+                <p class="text-[#0c1c17] text-base font-medium leading-normal">Review In Progress</p>
+                <p class="text-[#46a080] text-base font-normal leading-normal">June 20, 2024</p>
+              </div>
+            </div>
+            <div class="flex px-4 py-3 justify-end">
+              <button
+                class="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-10 px-4 bg-[#019863] text-[#f8fcfa] text-sm font-bold leading-normal tracking-[0.015em]"
+              >
+                <span class="truncate">Start Review</span>
+              </button>
+            </div>
+          </div>
+          <div class="layout-content-container flex flex-col w-[360px]">
+            <h2 class="text-[#0c1c17] text-[22px] font-bold leading-tight tracking-[-0.015em] px-4 pb-3 pt-5">Review Actions</h2>
+            <div class="flex items-center gap-4 bg-[#f8fcfa] px-4 min-h-14">
+              <div
+                class="text-[#0c1c17] flex items-center justify-center rounded-lg bg-[#e6f4ef] shrink-0 size-10"
+                data-icon="DownloadSimple"
+                data-size="24px"
+                data-weight="regular"
+              >
+                <svg xmlns="http://www.w3.org/2000/svg" width="24px" height="24px" fill="currentColor" viewBox="0 0 256 256">
+                  <path
+                    d="M224,152v56a16,16,0,0,1-16,16H48a16,16,0,0,1-16-16V152a8,8,0,0,1,16,0v56H208V152a8,8,0,0,1,16,0Zm-101.66,5.66a8,8,0,0,0,11.32,0l40-40a8,8,0,0,0-11.32-11.32L136,132.69V40a8,8,0,0,0-16,0v92.69L93.66,106.34a8,8,0,0,0-11.32,11.32Z"
+                  ></path>
+                </svg>
+              </div>
+              <p class="text-[#0c1c17] text-base font-normal leading-normal flex-1 truncate">Download Document</p>
+            </div>
+            <div class="flex items-center gap-4 bg-[#f8fcfa] px-4 min-h-14">
+              <div class="text-[#0c1c17] flex items-center justify-center rounded-lg bg-[#e6f4ef] shrink-0 size-10" data-icon="Check" data-size="24px" data-weight="regular">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24px" height="24px" fill="currentColor" viewBox="0 0 256 256">
+                  <path d="M229.66,77.66l-128,128a8,8,0,0,1-11.32,0l-56-56a8,8,0,0,1,11.32-11.32L96,188.69,218.34,66.34a8,8,0,0,1,11.32,11.32Z"></path>
+                </svg>
+              </div>
+              <p class="text-[#0c1c17] text-base font-normal leading-normal flex-1 truncate">Mark as Complete</p>
+            </div>
+            <div class="flex items-center gap-4 bg-[#f8fcfa] px-4 min-h-14">
+              <div class="text-[#0c1c17] flex items-center justify-center rounded-lg bg-[#e6f4ef] shrink-0 size-10" data-icon="User" data-size="24px" data-weight="regular">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24px" height="24px" fill="currentColor" viewBox="0 0 256 256">
+                  <path
+                    d="M230.92,212c-15.23-26.33-38.7-45.21-66.09-54.16a72,72,0,1,0-73.66,0C63.78,166.78,40.31,185.66,25.08,212a8,8,0,1,0,13.85,8c18.84-32.56,52.14-52,89.07-52s70.23,19.44,89.07,52a8,8,0,1,0,13.85-8ZM72,96a56,56,0,1,1,56,56A56.06,56.06,0,0,1,72,96Z"
+                  ></path>
+                </svg>
+              </div>
+              <p class="text-[#0c1c17] text-base font-normal leading-normal flex-1 truncate">Reassign Review</p>
+            </div>
+            <div class="flex items-center gap-4 bg-[#f8fcfa] px-4 min-h-14">
+              <div class="text-[#0c1c17] flex items-center justify-center rounded-lg bg-[#e6f4ef] shrink-0 size-10" data-icon="X" data-size="24px" data-weight="regular">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24px" height="24px" fill="currentColor" viewBox="0 0 256 256">
+                  <path
+                    d="M205.66,194.34a8,8,0,0,1-11.32,11.32L128,139.31,61.66,205.66a8,8,0,0,1-11.32-11.32L116.69,128,50.34,61.66A8,8,0,0,1,61.66,50.34L128,116.69l66.34-66.35a8,8,0,0,1,11.32,11.32L139.31,128Z"
+                  ></path>
+                </svg>
+              </div>
+              <p class="text-[#0c1c17] text-base font-normal leading-normal flex-1 truncate">Cancel Review</p>
             </div>
           </div>
         </div>
       </div>
     </div>
-    <script src="details.js" defer></script>
   </body>
 </html>

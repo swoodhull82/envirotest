@@ -14,8 +14,8 @@ document.addEventListener('DOMContentLoaded', () => {
   if (!filterStatusSelect) console.error('Filter Status Select element (filterStatus) not found!');
 
   // Global variables to store current filter values
-  let currentTitleFilter = 'All'; // Default to 'All' for select
-  let currentReviewerFilter = 'All'; // Default to 'All' for select
+  let currentTitleFilter = 'All'; 
+  let currentReviewerFilter = 'All'; 
   let currentStatusFilter = 'All';
 
   // DOM elements for "Add New Review Document" form
@@ -46,22 +46,18 @@ document.addEventListener('DOMContentLoaded', () => {
   if (!removeReviewerSelect) console.error('Remove Reviewer Select (removeReviewerSelect) not found!');
   if (!removeReviewerButton) console.error('Remove Reviewer Button (removeReviewerButton) not found!');
   
-  let appData = { employees: [] }; // Global store for application data
+  let appData = { users: [], documents: [] }; 
 
-  function populateTitleFilterDropdown(employees) {
+  function populateTitleFilterDropdown(docs) { 
     if (!filterTitleSelect) return;
-    const firstOption = filterTitleSelect.options[0]; // Preserve "All Titles"
+    const firstOption = filterTitleSelect.options[0]; 
     filterTitleSelect.innerHTML = '';
     filterTitleSelect.appendChild(firstOption);
 
     const uniqueTitles = new Set();
-    if (employees && Array.isArray(employees)) {
-      employees.forEach(employee => {
-        if (employee.assigned_tasks && Array.isArray(employee.assigned_tasks)) {
-          employee.assigned_tasks.forEach(task => {
-            if (task.title) uniqueTitles.add(task.title);
-          });
-        }
+    if (docs && Array.isArray(docs)) {
+      docs.forEach(doc => { 
+        if (doc.title) uniqueTitles.add(doc.title);
       });
     }
     uniqueTitles.forEach(title => {
@@ -72,56 +68,68 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  function populateReviewerFilterDropdown(employees) {
-    if (!filterReviewerSelect) return; // For the filter dropdown
-    const firstOption = filterReviewerSelect.options[0]; // Preserve "All Reviewers"
+  function populateReviewerFilterDropdown(users) { 
+    if (!filterReviewerSelect) return; 
+    const firstOption = filterReviewerSelect.options[0]; 
     filterReviewerSelect.innerHTML = '';
     filterReviewerSelect.appendChild(firstOption);
 
     const uniqueReviewers = new Set();
-    if (employees && Array.isArray(employees)) {
-      employees.forEach(employee => {
-        if (employee.name) uniqueReviewers.add(employee.name);
+    if (users && Array.isArray(users)) {
+      users.forEach(user => { 
+        if (user.name) uniqueReviewers.add(user.name);
       });
     }
     uniqueReviewers.forEach(name => {
       const option = document.createElement('option');
-      option.value = name; // Value is name for filter
+      option.value = name; 
       option.textContent = name;
       filterReviewerSelect.appendChild(option);
     });
+    
+    if (!uniqueReviewers.has("Unassigned")) {
+      const unassignedOption = document.createElement('option');
+      unassignedOption.value = "Unassigned";
+      unassignedOption.textContent = "Unassigned";
+      filterReviewerSelect.appendChild(unassignedOption);
+    }
   }
 
-  function populateNewDocReviewerSelect(employees) {
+  function populateNewDocReviewerSelect(users) { 
     if (!newDocReviewerSelect) return;
-    const firstOption = newDocReviewerSelect.options[0]; // Preserve "Select Reviewer"
+    const firstOption = newDocReviewerSelect.options[0]; 
     newDocReviewerSelect.innerHTML = '';
     newDocReviewerSelect.appendChild(firstOption);
 
-    if (employees && Array.isArray(employees)) {
-      employees.forEach(employee => {
-        if (employee.name && employee.id) {
+    const unassignedOption = document.createElement('option');
+    unassignedOption.value = ""; 
+    unassignedOption.textContent = "Unassigned";
+    newDocReviewerSelect.appendChild(unassignedOption);
+
+    if (users && Array.isArray(users)) {
+      users.forEach(user => { 
+        if (user.name && user.id) {
           const option = document.createElement('option');
-          option.value = employee.id; // Value is ID for form submission
-          option.textContent = employee.name;
+          option.value = user.id; 
+          option.textContent = user.name;
           newDocReviewerSelect.appendChild(option);
         }
       });
     }
   }
 
-  function populateRemoveReviewerSelect(employees) {
+  function populateRemoveReviewerSelect(users) { 
     if (!removeReviewerSelect) return;
-    const firstOption = removeReviewerSelect.options[0]; // Preserve "Select Reviewer"
+    const firstOption = removeReviewerSelect.options[0]; 
     removeReviewerSelect.innerHTML = '';
     removeReviewerSelect.appendChild(firstOption);
 
-    if (employees && Array.isArray(employees)) {
-      employees.forEach(employee => {
-        if (employee.name && employee.id) {
+    if (users && Array.isArray(users)) {
+      users.forEach(user => { 
+        if (user.name && user.id) {
           const option = document.createElement('option');
-          option.value = employee.id; 
-          option.textContent = employee.name;
+          option.value = user.id; 
+          option.textContent = user.name;
           removeReviewerSelect.appendChild(option);
         }
       });
@@ -134,82 +142,93 @@ document.addEventListener('DOMContentLoaded', () => {
       if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
       
       const jsonData = await response.json();
-      appData = jsonData;
+      appData = jsonData; 
 
-      if (!appData.employees || !Array.isArray(appData.employees)) {
-        console.error('No employees data found or data is not in expected format.');
-        displayErrorMessageInTables('Error: Employee data is missing or invalid.');
-        appData.employees = []; 
+      if (!appData.users || !Array.isArray(appData.users) || !appData.documents || !Array.isArray(appData.documents)) {
+        console.error('Data found is not in the expected format (users and documents arrays).');
+        displayErrorMessageInTables('Error: Data is not in the expected format.');
+        appData = { users: [], documents: [] }; 
       }
       
-      populateTitleFilterDropdown(appData.employees);
-      populateReviewerFilterDropdown(appData.employees); // For filter
-      populateNewDocReviewerSelect(appData.employees); // For new document form
-      populateRemoveReviewerSelect(appData.employees); // For remove reviewer form
-      processAndDisplayReviews(appData.employees); 
+      populateTitleFilterDropdown(appData.documents); 
+      populateReviewerFilterDropdown(appData.users);
+      populateNewDocReviewerSelect(appData.users); 
+      populateRemoveReviewerSelect(appData.users); 
+
+      processAndDisplayReviews(appData); 
 
     } catch (error) {
       console.error('Error fetching or processing review data:', error);
       displayErrorMessageInTables('Error loading review data.');
-      appData.employees = []; 
-      populateTitleFilterDropdown(appData.employees);
-      populateReviewerFilterDropdown(appData.employees);
-      populateNewDocReviewerSelect(appData.employees); 
-      populateRemoveReviewerSelect(appData.employees); // Also populate in catch
+      appData = { users: [], documents: [] }; 
+      
+      populateTitleFilterDropdown(appData.documents);
+      populateReviewerFilterDropdown(appData.users);
+      populateNewDocReviewerSelect(appData.users);
+      populateRemoveReviewerSelect(appData.users);
     }
   }
 
-  function processAndDisplayReviews(employees) { 
+  function processAndDisplayReviews(data) { 
+    const { users, documents } = data; 
+
     const allUpcomingTasks = [];
     const allOverdueTasks = [];
     const today = new Date();
     today.setHours(0, 0, 0, 0);
 
-    if (!employees || !Array.isArray(employees)) {
-      console.warn('processAndDisplayReviews called with invalid or empty employees array');
-      displayErrorMessageInTables('No employee data to process.');
+    if (!users || !Array.isArray(users) || !documents || !Array.isArray(documents)) {
+      console.warn('processAndDisplayReviews called with invalid data structure (users/documents).');
+      displayErrorMessageInTables('Error: Invalid data structure.');
       return;
     }
 
-    employees.forEach(employee => {
-      if (employee.assigned_tasks && Array.isArray(employee.assigned_tasks)) {
-        employee.assigned_tasks.forEach(task => {
-          if (task.status === 'Completed') return; 
+    documents.forEach(doc => {
+      if (doc.status === 'Completed') return; 
 
-          if (currentTitleFilter !== 'All' && task.title !== currentTitleFilter) {
-            return;
-          }
-          if (currentReviewerFilter !== 'All' && employee.name !== currentReviewerFilter) {
-            return;
-          }
-          if (currentStatusFilter !== 'All' && task.status !== currentStatusFilter) {
-            return;
-          }
-          
-          // Include employeeId with the task details
-          const taskDetail = { ...task, reviewer: employee.name, employeeId: employee.id };
-          const dueDate = new Date(taskDetail.dueDate);
-          dueDate.setHours(0, 0, 0, 0);
-
-          if (dueDate < today) allOverdueTasks.push(taskDetail);
-          else allUpcomingTasks.push(taskDetail);
-        });
+      let reviewerName = "Unassigned";
+      if (doc.assignedToUserId) {
+        const assignedUser = users.find(user => user.id === doc.assignedToUserId);
+        if (assignedUser) {
+          reviewerName = assignedUser.name;
+        } 
       }
+
+      // Apply filters
+      if (currentTitleFilter !== 'All' && doc.title !== currentTitleFilter) {
+        return;
+      }
+      if (currentReviewerFilter !== 'All' && reviewerName !== currentReviewerFilter) {
+        return;
+      }
+      if (currentStatusFilter !== 'All' && doc.status !== currentStatusFilter) {
+        return;
+      }
+      
+      const taskForTable = {
+        task_id: doc.id, 
+        title: doc.title,
+        reviewer: reviewerName,
+        dueDate: doc.dueDate,
+        status: doc.status,
+      };
+      
+      const dueDate = new Date(taskForTable.dueDate);
+      dueDate.setHours(0, 0, 0, 0);
+
+      if (dueDate < today) allOverdueTasks.push(taskForTable);
+      else allUpcomingTasks.push(taskForTable);
     });
 
-    // Clear existing rows (excluding headers)
     if (upcomingReviewsTbody) upcomingReviewsTbody.innerHTML = '';
     if (overdueReviewsTbody) overdueReviewsTbody.innerHTML = '';
     
-    // Note: The table headers (<thead>) in index.html would need an additional <th> for "Actions"
-    // e.g. <th class="px-4 py-3 text-left text-[#0c1c17] w-40 text-sm font-medium leading-normal">Actions</th>
-
     populateTable(upcomingReviewsTbody, allUpcomingTasks);
     populateTable(overdueReviewsTbody, allOverdueTasks);
   }
   
   function displayErrorMessageInTables(message) {
-    const errorRow = `<tr><td colspan="4" class="text-center text-red-500 py-4">${message}</td></tr>`;
+    const errorRow = `<tr><td colspan="5" class="text-center text-red-500 py-4">${message}</td></tr>`; 
     if (upcomingReviewsTbody) upcomingReviewsTbody.innerHTML = errorRow;
     if (overdueReviewsTbody) overdueReviewsTbody.innerHTML = errorRow;
   }
@@ -218,7 +237,6 @@ document.addEventListener('DOMContentLoaded', () => {
     if (!tableBody) return;
     tableBody.innerHTML = ''; 
     if (!reviews || reviews.length === 0) {
-      // Adjusted colspan to 5 to account for the new "Actions" column
       tableBody.innerHTML = '<tr><td colspan="5" class="text-center text-gray-500 py-4">No reviews to display.</td></tr>';
       return;
     }
@@ -227,17 +245,17 @@ document.addEventListener('DOMContentLoaded', () => {
       row.className = 'border-t border-t-[#cde9df]';
       
       const titleCell = document.createElement('td');
-      titleCell.className = 'h-[72px] px-4 py-2 w-[350px] text-[#0c1c17] text-sm font-normal leading-normal'; // Adjusted width
+      titleCell.className = 'h-[72px] px-4 py-2 w-[350px] text-[#0c1c17] text-sm font-normal leading-normal';
       titleCell.textContent = review.title;
       row.appendChild(titleCell);
 
       const reviewerCell = document.createElement('td');
-      reviewerCell.className = 'h-[72px] px-4 py-2 w-[350px] text-[#46a080] text-sm font-normal leading-normal'; // Adjusted width
+      reviewerCell.className = 'h-[72px] px-4 py-2 w-[350px] text-[#46a080] text-sm font-normal leading-normal';
       reviewerCell.textContent = review.reviewer;
       row.appendChild(reviewerCell);
 
       const dueDateCell = document.createElement('td');
-      dueDateCell.className = 'h-[72px] px-4 py-2 w-[300px] text-[#46a080] text-sm font-normal leading-normal'; // Adjusted width
+      dueDateCell.className = 'h-[72px] px-4 py-2 w-[300px] text-[#46a080] text-sm font-normal leading-normal';
       dueDateCell.textContent = review.dueDate;
       row.appendChild(dueDateCell);
 
@@ -272,14 +290,12 @@ document.addEventListener('DOMContentLoaded', () => {
       statusCell.appendChild(statusButton);
       row.appendChild(statusCell);
 
-      // Add "Remove" button cell
       const actionsCell = document.createElement('td');
-      actionsCell.className = 'h-[72px] px-4 py-2 w-40 text-sm font-normal leading-normal text-center'; // Added text-center
+      actionsCell.className = 'h-[72px] px-4 py-2 w-40 text-sm font-normal leading-normal text-center';
       const removeButton = document.createElement('button');
       removeButton.className = 'remove-review-btn text-red-500 hover:text-red-700 font-medium';
       removeButton.textContent = 'Remove';
-      removeButton.dataset.taskId = review.task_id;
-      removeButton.dataset.employeeId = review.employeeId; // employeeId is now part of the review object
+      removeButton.dataset.taskId = review.task_id; 
       actionsCell.appendChild(removeButton);
       row.appendChild(actionsCell);
       
@@ -289,23 +305,23 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Event Listeners for new filter dropdowns
   if (filterTitleSelect) {
-    filterTitleSelect.addEventListener('change', (event) => {
+    filterTitleSelect.addEventListener('change', (event) => { 
       currentTitleFilter = event.target.value; 
-      processAndDisplayReviews(appData.employees);
+      processAndDisplayReviews(appData);
     });
   }
 
   if (filterReviewerSelect) {
-    filterReviewerSelect.addEventListener('change', (event) => {
-      currentReviewerFilter = event.target.value;
-      processAndDisplayReviews(appData.employees);
+    filterReviewerSelect.addEventListener('change', (event) => { 
+      currentReviewerFilter = event.target.value; 
+      processAndDisplayReviews(appData);
     });
   }
 
   if (filterStatusSelect) {
     filterStatusSelect.addEventListener('change', () => {
       currentStatusFilter = filterStatusSelect.value;
-      processAndDisplayReviews(appData.employees);
+      processAndDisplayReviews(appData);
     });
   }
 
@@ -315,49 +331,125 @@ document.addEventListener('DOMContentLoaded', () => {
       event.preventDefault();
 
       const newDocTitle = newDocTitleInput.value.trim();
-      const selectedReviewerId = newDocReviewerSelect.value;
+      const selectedReviewerId = newDocReviewerSelect.value; 
       const newDocDueDate = newDocDueDateInput.value;
 
-      if (!newDocTitle) {
-        alert('Please enter a document title.');
-        return;
+      if (!newDocTitle) { alert('Please enter a document title.'); return; }
+      if (newDocReviewerSelect.value === "" && !selectedReviewerId && newDocReviewerSelect.options[newDocReviewerSelect.selectedIndex].text !== "Unassigned") { 
+         alert('Please select a reviewer or "Unassigned".'); return;
       }
-      if (!selectedReviewerId) {
-        alert('Please select a reviewer.');
-        return;
-      }
-      if (!newDocDueDate) {
-        alert('Please select a due date.');
+      if (!newDocDueDate) { alert('Please select a due date.'); return; }
+
+      const newDocument = {
+        id: 'doc' + Date.now(), 
+        title: newDocTitle,
+        type: "General", 
+        dueDate: newDocDueDate,
+        status: "Not Started",
+        assignedToUserId: selectedReviewerId === "" ? null : selectedReviewerId 
+      };
+
+      if (!appData.documents) appData.documents = [];
+      appData.documents.push(newDocument);
+      
+      const reviewer = appData.users.find(u => u.id === selectedReviewerId);
+      const reviewerName = reviewer ? reviewer.name : "Unassigned";
+      console.log(`New document "${newDocTitle}" assigned to ${reviewerName}. AppData:`, appData);
+
+      processAndDisplayReviews(appData);
+      populateTitleFilterDropdown(appData.documents); 
+      populateReviewerFilterDropdown(appData.users); 
+
+      addDocumentForm.reset();
+      newDocReviewerSelect.value = ""; 
+    });
+  }
+
+  // Event Delegation for Remove Buttons in tables
+  function handleRemoveTask(event) {
+    if (event.target.classList.contains('remove-review-btn')) {
+      const button = event.target;
+      const documentIdToRemove = button.dataset.taskId; 
+
+      if (!documentIdToRemove) {
+        console.error('Remove button is missing document ID.');
         return;
       }
 
-      const employee = appData.employees.find(emp => emp.id === selectedReviewerId);
+      const docIndex = appData.documents.findIndex(doc => doc.id === documentIdToRemove);
 
-      if (employee) {
-        const newTask = {
-          task_id: 'task' + Date.now(),
-          title: newDocTitle,
-          type: "General", // Default type
-          dueDate: newDocDueDate,
-          status: "Not Started"
-        };
+      if (docIndex === -1) {
+        console.error(`Document with ID ${documentIdToRemove} not found.`);
+        return;
+      }
+      
+      const removedDocument = appData.documents.splice(docIndex, 1)[0];
+      console.log(`Removed document "${removedDocument.title}". AppData:`, appData);
 
-        if (!employee.assigned_tasks) {
-          employee.assigned_tasks = [];
+      processAndDisplayReviews(appData);
+      populateTitleFilterDropdown(appData.documents); 
+      populateReviewerFilterDropdown(appData.users); 
+    }
+  }
+
+  if (upcomingReviewsTbody) {
+    upcomingReviewsTbody.addEventListener('click', handleRemoveTask);
+  }
+  if (overdueReviewsTbody) {
+    overdueReviewsTbody.addEventListener('click', handleRemoveTask);
+  }
+
+  // Event Listener for "Add New Reviewer" form
+  if (addReviewerForm) {
+    addReviewerForm.addEventListener('submit', (event) => {
+      event.preventDefault();
+      const newReviewerName = newReviewerNameInput.value.trim();
+      if (!newReviewerName) { alert('Please enter a reviewer name.'); return; }
+      const nameExists = appData.users.some(user => user.name.toLowerCase() === newReviewerName.toLowerCase());
+      if (nameExists) { alert('A reviewer with this name already exists.'); return; }
+
+      const newUser = {
+        id: 'user' + Date.now(), // Changed prefix to 'user'
+        name: newReviewerName
+      };
+
+      if (!appData.users) appData.users = [];
+      appData.users.push(newUser);
+      console.log(`New reviewer "${newReviewerName}" added. AppData:`, appData);
+
+      populateReviewerFilterDropdown(appData.users);
+      populateNewDocReviewerSelect(appData.users);
+      populateRemoveReviewerSelect(appData.users); 
+
+      addReviewerForm.reset();
+    });
+  }
+
+  // Event Listener for "Remove Reviewer" button
+  if (removeReviewerButton) {
+    removeReviewerButton.addEventListener('click', () => {
+      const reviewerIdToRemove = removeReviewerSelect.value;
+      if (!reviewerIdToRemove) { alert('Please select a reviewer to remove.'); return; }
+
+      const userIndex = appData.users.findIndex(user => user.id === reviewerIdToRemove);
+      if (userIndex === -1) { alert('Reviewer not found. Please refresh the list.'); return; }
+      
+      const removedUser = appData.users.splice(userIndex, 1)[0];
+      console.log(`Removed reviewer "${removedUser.name}". AppData:`, appData);
+
+      appData.documents.forEach(doc => {
+        if (doc.assignedToUserId === reviewerIdToRemove) {
+          doc.assignedToUserId = null; 
         }
-        employee.assigned_tasks.push(newTask);
-        
-        console.log(`New document "${newDocTitle}" assigned to ${employee.name}. AppData:`, appData);
+      });
 
-        processAndDisplayReviews(appData.employees);
-        populateTitleFilterDropdown(appData.employees); // Update title filter dropdown
+      processAndDisplayReviews(appData);
+      populateTitleFilterDropdown(appData.documents);
+      populateReviewerFilterDropdown(appData.users);
+      populateNewDocReviewerSelect(appData.users);
+      populateRemoveReviewerSelect(appData.users); 
 
-        addDocumentForm.reset();
-        newDocReviewerSelect.value = ""; // Reset select to default placeholder
-      } else {
-        console.error('Selected reviewer (employee) not found. ID:', selectedReviewerId);
-        alert('An error occurred: Selected reviewer not found.');
-      }
+      removeReviewerSelect.value = ""; 
     });
   }
 

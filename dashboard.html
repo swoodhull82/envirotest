@@ -30,10 +30,12 @@
           </div>
           <div class="flex flex-1 justify-end gap-8">
             <div class="flex items-center gap-9">
-              <a class="text-[#0c1c17] text-sm font-medium leading-normal" href="#">Home</a>
-              <a class="text-[#0c1c17] text-sm font-medium leading-normal" href="#">Reviews</a>
-              <a class="text-[#0c1c17] text-sm font-medium leading-normal" href="#">Documents</a>
-              <a class="text-[#0c1c17] text-sm font-medium leading-normal" href="#">Reports</a>
+              <a class="text-[#0c1c17] text-sm font-medium leading-normal" href="index.html">Home</a>
+              <a class="text-[#0c1c17] text-sm font-medium leading-normal" href="dashboard.html">Dashboard</a>
+              <a class="text-[#0c1c17] text-sm font-medium leading-normal" href="reminders.html">Reminders</a>
+              <a class="text-[#0c1c17] text-sm font-medium leading-normal" href="calendar.html">Calendar</a>
+              <a class="text-[#0c1c17] text-sm font-medium leading-normal" href="document_review_assignments.html">Assignments</a>
+              <a class="text-[#0c1c17] text-sm font-medium leading-normal" href="settings.html">Settings</a>
             </div>
             <button
               class="flex max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-10 bg-[#e6f4ef] text-[#0c1c17] gap-2 text-sm font-bold leading-normal tracking-[0.015em] min-w-0 px-2.5"
@@ -91,6 +93,60 @@
                 </div>
               </button>
             </div>
+            <!-- Add New Employee Section -->
+            <h2 class="text-[#0c1c17] text-[22px] font-bold leading-tight tracking-[-0.015em] px-4 pb-3 pt-5">Add New Employee</h2>
+            <div class="px-4 py-3">
+              <form id="addEmployeeForm" class="flex items-center">
+                <input type="text" id="employeeName" name="employeeName" placeholder="Employee Name" class="rounded-lg border border-[#cde9df] p-2 text-[#0c1c17] text-sm flex-grow" required />
+                <button type="submit" class="flex items-center justify-center rounded-lg h-10 bg-[#e6f4ef] text-[#0c1c17] text-sm font-bold leading-normal px-4 ml-2">Add Employee</button>
+              </form>
+            </div>
+            <!-- End Add New Employee Section -->
+            <!-- Employee List Section -->
+            <h2 class="text-[#0c1c17] text-[22px] font-bold leading-tight tracking-[-0.015em] px-4 pb-3 pt-5">Employees</h2>
+            <div class="px-4 py-3">
+              <ul id="employeeList" class="list-disc pl-5 text-[#0c1c17] text-sm">
+                <!-- Employee items will be populated here by JavaScript -->
+              </ul>
+            </div>
+            <!-- End Employee List Section -->
+
+            <!-- Assign Task Section -->
+            <h2 class="text-[#0c1c17] text-[22px] font-bold leading-tight tracking-[-0.015em] px-4 pb-3 pt-5">Assign Task</h2>
+            <div class="px-4 py-3">
+              <form id="assignTaskForm" class="p-4 space-y-4 border border-[#cde9df] rounded-lg bg-white shadow">
+                <div>
+                  <label for="employeeSelectForTask" class="block text-sm font-medium text-[#0c1c17]">Assign to Employee:</label>
+                  <select id="employeeSelectForTask" name="employeeSelectForTask" class="mt-1 block w-full p-2 border border-[#cde9df] rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm text-[#0c1c17] bg-white" required>
+                    <!-- Options will be populated by JavaScript -->
+                  </select>
+                </div>
+                <div>
+                  <label for="taskTitle" class="block text-sm font-medium text-[#0c1c17]">Task Title:</label>
+                  <input type="text" id="taskTitle" name="taskTitle" class="mt-1 block w-full p-2 border border-[#cde9df] rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm text-[#0c1c17]" required />
+                </div>
+                <div>
+                  <label for="taskType" class="block text-sm font-medium text-[#0c1c17]">Task Type:</label>
+                  <select id="taskType" name="taskType" class="mt-1 block w-full p-2 border border-[#cde9df] rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm text-[#0c1c17] bg-white" required>
+                    <option value="" disabled selected>Select a type</option>
+                    <option value="MRL">MRL</option>
+                    <option value="iDOC">iDOC</option>
+                    <option value="oDOC">oDOC</option>
+                    <option value="Internal Audit">Internal Audit</option>
+                    <option value="SOP Review">SOP Review</option>
+                  </select>
+                </div>
+                <div>
+                  <label for="taskDueDate" class="block text-sm font-medium text-[#0c1c17]">Due Date:</label>
+                  <input type="date" id="taskDueDate" name="taskDueDate" class="mt-1 block w-full p-2 border border-[#cde9df] rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm text-[#0c1c17]" required />
+                </div>
+                <div>
+                  <button type="submit" class="flex items-center justify-center rounded-lg h-10 bg-[#e6f4ef] text-[#0c1c17] text-sm font-bold leading-normal px-4 py-2 hover:bg-[#d1e9e2]">Assign Task</button>
+                </div>
+              </form>
+            </div>
+            <!-- End Assign Task Section -->
+
             <h2 class="text-[#0c1c17] text-[22px] font-bold leading-tight tracking-[-0.015em] px-4 pb-3 pt-5">Upcoming Reviews</h2>
             <div class="px-4 py-3 @container">
               <div class="flex overflow-hidden rounded-lg border border-[#cde9df] bg-[#f8fcfa]">

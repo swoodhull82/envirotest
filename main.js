@@ -3,24 +3,68 @@ document.addEventListener('DOMContentLoaded', () => {
   const upcomingReviewsTbody = document.querySelectorAll('.layout-content-container table tbody')[0];
   const overdueReviewsTbody = document.querySelectorAll('.layout-content-container table tbody')[1];
   
-  // Variables for new filter inputs
-  const filterTitleInput = document.getElementById('filterTitle');
-  const filterReviewerInput = document.getElementById('filterReviewer');
+  // Variables for new filter inputs (ID names match the <select> elements)
+  const filterTitleSelect = document.getElementById('filterTitle');
+  const filterReviewerSelect = document.getElementById('filterReviewer');
   const filterStatusSelect = document.getElementById('filterStatus');
 
   // Null checks for new filter elements
-  if (!filterTitleInput) console.error('Filter Title Input element (filterTitle) not found!');
-  if (!filterReviewerInput) console.error('Filter Reviewer Input element (filterReviewer) not found!');
+  if (!filterTitleSelect) console.error('Filter Title Select element (filterTitle) not found!');
+  if (!filterReviewerSelect) console.error('Filter Reviewer Select element (filterReviewer) not found!');
   if (!filterStatusSelect) console.error('Filter Status Select element (filterStatus) not found!');
 
   // Global variables to store current filter values
-  let currentTitleFilter = '';
-  let currentReviewerFilter = '';
+  let currentTitleFilter = 'All'; // Default to 'All' for select
+  let currentReviewerFilter = 'All'; // Default to 'All' for select
   let currentStatusFilter = 'All';
   
   // Old DOM element variables removed
 
   let appData = { employees: [] }; // Global store for application data
+
+  function populateTitleFilterDropdown(employees) {
+    if (!filterTitleSelect) return;
+    const firstOption = filterTitleSelect.options[0]; // Preserve "All Titles"
+    filterTitleSelect.innerHTML = '';
+    filterTitleSelect.appendChild(firstOption);
+
+    const uniqueTitles = new Set();
+    if (employees && Array.isArray(employees)) {
+      employees.forEach(employee => {
+        if (employee.assigned_tasks && Array.isArray(employee.assigned_tasks)) {
+          employee.assigned_tasks.forEach(task => {
+            if (task.title) uniqueTitles.add(task.title);
+          });
+        }
+      });
+    }
+    uniqueTitles.forEach(title => {
+      const option = document.createElement('option');
+      option.value = title;
+      option.textContent = title;
+      filterTitleSelect.appendChild(option);
+    });
+  }
+
+  function populateReviewerFilterDropdown(employees) {
+    if (!filterReviewerSelect) return;
+    const firstOption = filterReviewerSelect.options[0]; // Preserve "All Reviewers"
+    filterReviewerSelect.innerHTML = '';
+    filterReviewerSelect.appendChild(firstOption);
+
+    const uniqueReviewers = new Set();
+    if (employees && Array.isArray(employees)) {
+      employees.forEach(employee => {
+        if (employee.name) uniqueReviewers.add(employee.name);
+      });
+    }
+    uniqueReviewers.forEach(name => {
+      const option = document.createElement('option');
+      option.value = name;
+      option.textContent = name;
+      filterReviewerSelect.appendChild(option);
+    });
+  }
 
   async function initialFetchAndDisplay() {
     try {
@@ -33,16 +77,19 @@ document.addEventListener('DOMContentLoaded', () => {
       if (!appData.employees || !Array.isArray(appData.employees)) {
         console.error('No employees data found or data is not in expected format.');
         displayErrorMessageInTables('Error: Employee data is missing or invalid.');
-        // Removed calls to displayEmployees, populateEmployeeSelect, populateTaskTypeSelect
-        return;
+        appData.employees = []; // Ensure appData.employees is an empty array for populating dropdowns
       }
-      processAndDisplayReviews(appData.employees); // Simplified call
-      // Removed calls to displayEmployees, populateEmployeeSelect, populateTaskTypeSelect
+      
+      populateTitleFilterDropdown(appData.employees);
+      populateReviewerFilterDropdown(appData.employees);
+      processAndDisplayReviews(appData.employees); 
 
     } catch (error) {
       console.error('Error fetching or processing review data:', error);
       displayErrorMessageInTables('Error loading review data.');
-      // Removed calls to displayEmployees, populateEmployeeSelect, populateTaskTypeSelect
+      appData.employees = []; // Ensure appData.employees is an empty array for populating dropdowns
+      populateTitleFilterDropdown(appData.employees);
+      populateReviewerFilterDropdown(appData.employees);
     }
   }
 
@@ -63,11 +110,11 @@ document.addEventListener('DOMContentLoaded', () => {
         employee.assigned_tasks.forEach(task => {
           if (task.status === 'Completed') return; // Do not display completed tasks
 
-          // Apply new filters
-          if (currentTitleFilter && !task.title.toLowerCase().includes(currentTitleFilter)) {
+          // Apply new filters from select dropdowns
+          if (currentTitleFilter !== 'All' && task.title !== currentTitleFilter) {
             return;
           }
-          if (currentReviewerFilter && !employee.name.toLowerCase().includes(currentReviewerFilter)) {
+          if (currentReviewerFilter !== 'All' && employee.name !== currentReviewerFilter) {
             return;
           }
           if (currentStatusFilter !== 'All' && task.status !== currentStatusFilter) {

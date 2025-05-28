@@ -91,16 +91,18 @@
             </div>
             <!-- New Filter Inputs Section -->
             <div class="flex gap-4 p-4 items-center flex-wrap">
-              <input 
-                type="text" 
+              <select 
                 id="filterTitle" 
-                placeholder="Filter by Document Title" 
                 class="shadow appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline flex-grow md:flex-grow-0">
-              <input 
-                type="text" 
+                <option value="All" selected>All Titles</option>
+                <!-- Options will be populated by main.js -->
+              </select>
+              <select 
                 id="filterReviewer" 
-                placeholder="Filter by Reviewer" 
                 class="shadow appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline flex-grow md:flex-grow-0">
+                <option value="All" selected>All Reviewers</option>
+                <!-- Options will be populated by main.js -->
+              </select>
               <select 
                 id="filterStatus" 
                 class="shadow appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline flex-grow md:flex-grow-0">

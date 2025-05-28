@@ -1,36 +1,57 @@
 {
-  "upcoming_reviews": [
+  "employees": [
     {
-      "title": "Document A",
-      "reviewer": "Sophia Chen",
-      "dueDate": "2024-08-15",
-      "status": "In Progress"
+      "id": "emp1",
+      "name": "Sophia Chen",
+      "assigned_tasks": [
+        {
+          "task_id": "task001",
+          "title": "MRL Update Q3",
+          "type": "MRL",
+          "dueDate": "2024-09-15",
+          "status": "Not Started"
+        },
+        {
+          "task_id": "task002",
+          "title": "Instrument MDL Validation",
+          "type": "iDOC",
+          "dueDate": "2024-07-01",
+          "status": "Overdue"
+        }
+      ]
     },
     {
-      "title": "Document B",
-      "reviewer": "John Doe",
-      "dueDate": "2024-08-20",
-      "status": "Not Started"
+      "id": "emp2",
+      "name": "John Doe",
+      "assigned_tasks": [
+        {
+          "task_id": "task003",
+          "title": "Annual SOP Review - Lab Safety",
+          "type": "SOP Review",
+          "dueDate": "2024-10-20",
+          "status": "In Progress"
+        }
+      ]
     },
     {
-      "title": "Document C",
-      "reviewer": "Alice Wonderland",
-      "dueDate": "2024-08-25",
-      "status": "In Progress"
-    }
-  ],
-  "overdue_reviews": [
-    {
-      "title": "Document X",
-      "reviewer": "Nathaniel Tan",
-      "dueDate": "2024-07-20",
-      "status": "Overdue"
-    },
-    {
-      "title": "Document Y",
-      "reviewer": "Jane Smith",
-      "dueDate": "2024-07-10",
-      "status": "Overdue"
+      "id": "emp3",
+      "name": "Alice Wonderland",
+      "assigned_tasks": [
+        {
+          "task_id": "task004",
+          "title": "Internal Audit Prep - Section A",
+          "type": "Internal Audit",
+          "dueDate": "2024-08-30",
+          "status": "Not Started"
+        },
+        {
+          "task_id": "task005",
+          "title": "QMS Document Control Update",
+          "type": "iDOC",
+          "dueDate": "2024-09-05",
+          "status": "In Progress"
+        }
+      ]
     }
   ]
 }

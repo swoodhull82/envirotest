@@ -97,6 +97,11 @@
                 </button>
               </div>
             </div>
+            <!-- View Switcher Buttons -->
+            <div class="flex justify-center my-4 gap-2">
+              <button id="monthViewBtn" class="px-4 py-2 rounded-md text-sm font-medium bg-teal-500 text-white">Month</button>
+              <button id="agendaViewBtn" class="px-4 py-2 rounded-md text-sm font-medium bg-gray-200 text-gray-700 hover:bg-gray-300">Agenda</button>
+            </div>
             <div id="calendarGrid" class="grid grid-cols-7 p-3">
               <div class="text-center text-sm font-medium text-[#0c1c17] border p-2">Sun</div>
               <div class="text-center text-sm font-medium text-[#0c1c17] border p-2">Mon</div>
@@ -111,6 +116,12 @@
             <div id="tasksForSelectedDayContainer" class="p-4 mt-6 bg-white shadow-md rounded">
               <h3 class="text-lg font-semibold mb-2" id="tasksForSelectedDayHeading">Tasks for Selected Date:</h3>
               <ul id="taskList" class="list-disc pl-5"></ul>
+            </div>
+            <!-- Agenda View Container -->
+            <div id="agendaViewContainer" class="p-4 hidden">
+              <!-- Content for agenda view will be populated by JavaScript -->
+              <h3 class="text-lg font-semibold mb-2" id="agendaViewHeading">Upcoming Reviews</h3>
+              <ul id="agendaList" class="space-y-2"></ul>
             </div>
           </div>
         </div>

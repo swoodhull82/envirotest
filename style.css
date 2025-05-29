@@ -1,43 +1,40 @@
-/* In style.css */
-.has-due-date span { /* Target the span containing the day number */
-  background-color: #ef4444 !important; /* Tailwind's red-500 */
-  color: white !important; /* Ensure text is readable */
-  /* border-radius, padding, width, height, line-height, text-align are already handled by Tailwind on the span or dayNumberSpan's base classes if it's today */
+/* :root or body in style.css */
+:root {
+  --color-accent-teal: #14b8a6; /* teal-500 */
+  --color-accent-teal-hover: #0d9488; /* teal-600 */
+  --color-due-date-red: #ef4444; /* red-500 */
+  --color-text-primary: #0c1c17;
+  --color-text-secondary: #4a5568; /* gray-600, example for less prominent text */
+  --color-text-white: #ffffff;
+  --color-background-page: #f8fcfa;
+  --color-background-card: #ffffff;
+  --color-border-light: #e6f4ef; /* Example, light border */
+  --color-border-medium: #cde9df; /* Example, medium border */
+  --color-status-overdue: #c53030; /* red-700 text */
+  --color-status-inprogress: #d69e2e; /* yellow-700 text, using Tailwind's yellow-700 hex */
+  --color-status-notstarted: #2b6cb0; /* blue-700 text */
+  --color-status-default-text: #4a5568; /* gray-600 for default status text */
 }
-
-/* Ensure the .has-due-date styling overrides the .today styling if they coincide */
-.has-due-date.today span, /* If the cell is today and has a due date */
-.has-due-date span { /* General case for due dates */
-  background-color: #ef4444 !important; /* red-500 */
-  color: white !important;
-}
-
-/* Optional: if the cell itself needs a different background for due dates, not just the number */
-/*
-.has-due-date {
-  background-color: #fee2e2; // Tailwind's red-100
-}
-*/
 
 /* Styling for the day number span, especially when it's 'today' or 'has-due-date' */
-/* The base styling is applied in JS, but these ensure consistency for the circle */
 .calendar-day-number {
   display: inline-block;
   width: 1.75rem; /* w-7 */
   height: 1.75rem; /* h-7 */
-  line-height: 1.75rem; /* Adjust to vertically center, might be same as height */
+  line-height: 1.75rem; 
   text-align: center;
   border-radius: 9999px; /* rounded-full */
 }
 
 /* Today's date styling (if not a due date) */
-.today .calendar-day-number {
-  background-color: #14b8a6; /* teal-500 */
-  color: white;
+.today .calendar-day-number { 
+  background-color: var(--color-accent-teal); 
+  color: var(--color-text-white);
 }
 
 /* Styling for due date numbers */
-.has-due-date .calendar-day-number {
-  background-color: #ef4444 !important; /* red-500, ensure it overrides 'today' */
-  color: white !important;
+/* Ensure the .has-due-date styling overrides the .today styling if they coincide */
+.has-due-date .calendar-day-number { 
+  background-color: var(--color-due-date-red) !important; 
+  color: var(--color-text-white) !important;
 }

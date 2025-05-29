@@ -22,14 +22,14 @@ document.addEventListener('DOMContentLoaded', () => {
   const addDocumentForm = document.getElementById('addDocumentForm');
   const newDocTitleInput = document.getElementById('newDocTitle');
   const newDocReviewerSelect = document.getElementById('newDocReviewerSelect');
-  const newDocStartDateInput = document.getElementById('newDocStartDate'); // Added
+  const newDocStartDateInput = document.getElementById('newDocStartDate'); 
   const newDocDueDateInput = document.getElementById('newDocDueDate');
 
   // Null checks for new document form elements
   if (!addDocumentForm) console.error('Add Document Form (addDocumentForm) not found!');
   if (!newDocTitleInput) console.error('New Document Title Input (newDocTitle) not found!');
   if (!newDocReviewerSelect) console.error('New Document Reviewer Select (newDocReviewerSelect) not found!');
-  if (!newDocStartDateInput) console.error('New Document Start Date Input (newDocStartDate) not found!'); // Added
+  if (!newDocStartDateInput) console.error('New Document Start Date Input (newDocStartDate) not found!'); 
   if (!newDocDueDateInput) console.error('New Document Due Date Input (newDocDueDate) not found!');
 
   // DOM elements for "Add New Reviewer" form
@@ -52,9 +52,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
   function populateTitleFilterDropdown(docs) { 
     if (!filterTitleSelect) return;
-    const firstOption = filterTitleSelect.options[0]; 
+    const currentSelectedValue = filterTitleSelect.value;
     filterTitleSelect.innerHTML = '';
-    filterTitleSelect.appendChild(firstOption);
+
+    const allTitlesOption = document.createElement('option');
+    allTitlesOption.value = "All";
+    allTitlesOption.textContent = "All Titles";
+    filterTitleSelect.appendChild(allTitlesOption);
 
     const uniqueTitles = new Set();
     if (docs && Array.isArray(docs)) {
@@ -68,13 +72,25 @@ document.addEventListener('DOMContentLoaded', () => {
       option.textContent = title;
       filterTitleSelect.appendChild(option);
     });
+    
+    // Attempt to restore selection
+    if (Array.from(filterTitleSelect.options).some(opt => opt.value === currentSelectedValue)) {
+        filterTitleSelect.value = currentSelectedValue;
+    } else {
+        filterTitleSelect.value = "All"; // Default if previous selection is no longer valid
+    }
   }
 
   function populateReviewerFilterDropdown(users) { 
+    console.log('Populating filterReviewerSelect with users:', JSON.parse(JSON.stringify(users)));
     if (!filterReviewerSelect) return; 
-    const firstOption = filterReviewerSelect.options[0]; 
+    const currentSelectedValue = filterReviewerSelect.value;
     filterReviewerSelect.innerHTML = '';
-    filterReviewerSelect.appendChild(firstOption);
+
+    const allReviewersOption = document.createElement('option');
+    allReviewersOption.value = "All";
+    allReviewersOption.textContent = "All Reviewers";
+    filterReviewerSelect.appendChild(allReviewersOption);
 
     const uniqueReviewers = new Set();
     if (users && Array.isArray(users)) {
@@ -95,16 +111,29 @@ document.addEventListener('DOMContentLoaded', () => {
       unassignedOption.textContent = "Unassigned";
       filterReviewerSelect.appendChild(unassignedOption);
     }
+
+    // Attempt to restore selection
+    if (Array.from(filterReviewerSelect.options).some(opt => opt.value === currentSelectedValue)) {
+        filterReviewerSelect.value = currentSelectedValue;
+    } else {
+        filterReviewerSelect.value = "All"; // Default
+    }
   }
 
   function populateNewDocReviewerSelect(users) { 
+    console.log('Populating newDocReviewerSelect with users:', JSON.parse(JSON.stringify(users)));
     if (!newDocReviewerSelect) return;
-    const firstOption = newDocReviewerSelect.options[0]; 
+    const currentSelectedValue = newDocReviewerSelect.value;
     newDocReviewerSelect.innerHTML = '';
-    newDocReviewerSelect.appendChild(firstOption);
 
+    const selectReviewerOption = document.createElement('option');
+    selectReviewerOption.value = "";
+    selectReviewerOption.textContent = "Select Reviewer";
+    selectReviewerOption.disabled = true;
+    newDocReviewerSelect.appendChild(selectReviewerOption);
+    
     const unassignedOption = document.createElement('option');
-    unassignedOption.value = ""; 
+    unassignedOption.value = ""; // Represents null assignment
     unassignedOption.textContent = "Unassigned";
     newDocReviewerSelect.appendChild(unassignedOption);
 
@@ -118,13 +147,49 @@ document.addEventListener('DOMContentLoaded', () => {
         }
       });
     }
+    // Attempt to restore selection, or default to "" (which would be "Unassigned" or "Select Reviewer" if no value)
+    // If currentSelectedValue was a valid user ID that still exists, it will be selected.
+    // If it was "", it will select "Unassigned".
+    // If the form was just reset, currentSelectedValue would be "", and newDocReviewerSelect.value = "" handles it.
+    if (Array.from(newDocReviewerSelect.options).some(opt => opt.value === currentSelectedValue)) {
+        newDocReviewerSelect.value = currentSelectedValue;
+    } else {
+        newDocReviewerSelect.value = ""; // Default to "Select Reviewer" (disabled) or "Unassigned"
+    }
+     // Ensure "Select Reviewer" is selected if the value is truly empty and it's the placeholder
+    if (newDocReviewerSelect.value === "" && !Array.from(newDocReviewerSelect.options).find(opt => opt.value === "" && opt.textContent === "Unassigned" && opt.selected)) {
+        // This logic is a bit tricky because "Unassigned" also has value="".
+        // The default desired state after reset is that "Select Reviewer" (disabled) appears selected.
+        // HTML's default behavior for select with a disabled selected option usually handles this.
+        // Setting .value = "" will pick the first option with value "" which is "Select Reviewer" due to order if it's added first,
+        // or "Unassigned". Let's ensure "Select Reviewer" is first and has .selected = true if no other value matches.
+        const placeholderOption = Array.from(newDocReviewerSelect.options).find(opt => opt.disabled);
+        if (placeholderOption && !currentSelectedValue) { // If nothing was previously selected, or selection is now invalid
+             newDocReviewerSelect.value = placeholderOption.value; // This should be ""
+        } else if (!Array.from(newDocReviewerSelect.options).some(opt => opt.value === currentSelectedValue)) {
+            newDocReviewerSelect.value = ""; // Fallback to "Unassigned" or the disabled option if still nothing matches
+        }
+    }
+    // Ensure the first option (disabled "Select Reviewer") is selected if no valid previous selection
+    if (!newDocReviewerSelect.value && newDocReviewerSelect.options.length > 0 && newDocReviewerSelect.options[0].disabled) {
+      newDocReviewerSelect.options[0].selected = true;
+    }
+
+
   }
 
   function populateRemoveReviewerSelect(users) { 
+    console.log('Populating removeReviewerSelect with users:', JSON.parse(JSON.stringify(users)));
     if (!removeReviewerSelect) return;
-    const firstOption = removeReviewerSelect.options[0]; 
+    const currentSelectedValue = removeReviewerSelect.value;
     removeReviewerSelect.innerHTML = '';
-    removeReviewerSelect.appendChild(firstOption);
+
+    const selectReviewerOption = document.createElement('option');
+    selectReviewerOption.value = "";
+    selectReviewerOption.textContent = "Select Reviewer";
+    selectReviewerOption.disabled = true;
+    // selectReviewerOption.selected = true; // Set selected by default
+    removeReviewerSelect.appendChild(selectReviewerOption);
 
     if (users && Array.isArray(users)) {
       users.forEach(user => { 
@@ -136,6 +201,14 @@ document.addEventListener('DOMContentLoaded', () => {
         }
       });
     }
+    if (Array.from(removeReviewerSelect.options).some(opt => opt.value === currentSelectedValue)) {
+        removeReviewerSelect.value = currentSelectedValue;
+    } else {
+        removeReviewerSelect.value = ""; // Default to "Select Reviewer"
+    }
+    if (!removeReviewerSelect.value && removeReviewerSelect.options.length > 0 && removeReviewerSelect.options[0].disabled) {
+      removeReviewerSelect.options[0].selected = true;
+    }
   }
 
   async function initialFetchAndDisplay() {
@@ -145,6 +218,7 @@ document.addEventListener('DOMContentLoaded', () => {
       
       const jsonData = await response.json();
       appData = jsonData; 
+      console.log('Fetched appData:', JSON.parse(JSON.stringify(appData))); 
 
       if (!appData.users || !Array.isArray(appData.users) || !appData.documents || !Array.isArray(appData.documents)) {
         console.error('Data found is not in the expected format (users and documents arrays).');
@@ -152,6 +226,11 @@ document.addEventListener('DOMContentLoaded', () => {
         appData = { users: [], documents: [] }; 
       }
       
+      console.log('Before populating dropdowns, appData.users:', JSON.parse(JSON.stringify(appData.users))); 
+      console.log('filterReviewerSelect element:', filterReviewerSelect); 
+      console.log('newDocReviewerSelect element:', newDocReviewerSelect); 
+      console.log('removeReviewerSelect element:', removeReviewerSelect); 
+
       populateTitleFilterDropdown(appData.documents); 
       populateReviewerFilterDropdown(appData.users);
       populateNewDocReviewerSelect(appData.users); 
@@ -164,6 +243,11 @@ document.addEventListener('DOMContentLoaded', () => {
       displayErrorMessageInTables('Error loading review data.');
       appData = { users: [], documents: [] }; 
       
+      console.log('In catch, appData.users:', JSON.parse(JSON.stringify(appData.users)));
+      console.log('filterReviewerSelect element (catch):', filterReviewerSelect);
+      console.log('newDocReviewerSelect element (catch):', newDocReviewerSelect);
+      console.log('removeReviewerSelect element (catch):', removeReviewerSelect);
+
       populateTitleFilterDropdown(appData.documents);
       populateReviewerFilterDropdown(appData.users);
       populateNewDocReviewerSelect(appData.users);
@@ -196,7 +280,6 @@ document.addEventListener('DOMContentLoaded', () => {
         } 
       }
 
-      // Apply filters
       if (currentTitleFilter !== 'All' && doc.title !== currentTitleFilter) {
         return;
       }
@@ -213,7 +296,6 @@ document.addEventListener('DOMContentLoaded', () => {
         reviewer: reviewerName,
         dueDate: doc.dueDate,
         status: doc.status,
-        // startDate: doc.startDate // Not directly used in table display yet
       };
       
       const dueDate = new Date(taskForTable.dueDate);
@@ -335,17 +417,18 @@ document.addEventListener('DOMContentLoaded', () => {
 
       const newDocTitle = newDocTitleInput.value.trim();
       const selectedReviewerId = newDocReviewerSelect.value; 
-      const newDocStartDate = newDocStartDateInput.value; // Added
+      const newDocStartDate = newDocStartDateInput.value; 
       const newDocDueDate = newDocDueDateInput.value;
 
       if (!newDocTitle) { alert('Please enter a document title.'); return; }
-      if (newDocReviewerSelect.value === "" && !selectedReviewerId && newDocReviewerSelect.options[newDocReviewerSelect.selectedIndex].text !== "Unassigned") { 
+      // Refined validation for reviewer selection:
+      // Allow "" (Unassigned) but not the disabled "Select Reviewer" if it somehow gets submitted with value=""
+      if (selectedReviewerId === "" && newDocReviewerSelect.options[newDocReviewerSelect.selectedIndex].disabled) {
          alert('Please select a reviewer or "Unassigned".'); return;
       }
-      if (!newDocStartDate) { alert('Please select a start date.'); return;} // Added validation
+      if (!newDocStartDate) { alert('Please select a start date.'); return;} 
       if (!newDocDueDate) { alert('Please select a due date.'); return; }
 
-      // Optional: Validate startDate <= dueDate
       if (newDocStartDate && newDocDueDate && new Date(newDocStartDate) > new Date(newDocDueDate)) {
         alert('Start date cannot be after due date.');
         return;
@@ -355,11 +438,11 @@ document.addEventListener('DOMContentLoaded', () => {
         id: 'doc' + Date.now(), 
         title: newDocTitle,
         type: "General", 
-        startDate: newDocStartDate, // Added
+        startDate: newDocStartDate, 
         dueDate: newDocDueDate,
         status: "Not Started",
         assignedToUserId: selectedReviewerId === "" ? null : selectedReviewerId,
-        completionDate: null // Added
+        completionDate: null 
       };
 
       if (!appData.documents) appData.documents = [];
@@ -375,7 +458,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
       addDocumentForm.reset();
       newDocReviewerSelect.value = ""; 
-      // newDocStartDateInput.value = ""; // Already handled by form.reset()
+      if (newDocReviewerSelect.options.length > 0 && newDocReviewerSelect.options[0].disabled) {
+        newDocReviewerSelect.options[0].selected = true;
+      }
     });
   }
 
@@ -464,6 +549,9 @@ document.addEventListener('DOMContentLoaded', () => {
       populateRemoveReviewerSelect(appData.users); 
 
       removeReviewerSelect.value = ""; 
+      if (removeReviewerSelect.options.length > 0 && removeReviewerSelect.options[0].disabled) {
+        removeReviewerSelect.options[0].selected = true;
+      }
     });
   }
 

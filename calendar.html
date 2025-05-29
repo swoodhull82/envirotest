@@ -100,6 +100,7 @@
             <!-- View Switcher Buttons -->
             <div class="flex justify-center my-4 gap-2">
               <button id="monthViewBtn" class="px-4 py-2 rounded-md text-sm font-medium bg-teal-500 text-white">Month</button>
+              <button id="weekViewBtn" class="px-4 py-2 rounded-md text-sm font-medium bg-gray-200 text-gray-700 hover:bg-gray-300">Week</button>
               <button id="agendaViewBtn" class="px-4 py-2 rounded-md text-sm font-medium bg-gray-200 text-gray-700 hover:bg-gray-300">Agenda</button>
             </div>
             <div id="calendarGrid" class="grid grid-cols-7 p-3">
@@ -122,6 +123,12 @@
               <!-- Content for agenda view will be populated by JavaScript -->
               <h3 class="text-lg font-semibold mb-2" id="agendaViewHeading">Upcoming Reviews</h3>
               <ul id="agendaList" class="space-y-2"></ul>
+            </div>
+            <!-- Week View Container -->
+            <div id="weekViewContainer" class="p-4 hidden">
+              <!-- Content for week view will be populated by JavaScript -->
+              <h3 class="text-lg font-semibold mb-2" id="weekViewHeading">Week View</h3>
+              <!-- Grid for days of the week will go here -->
             </div>
           </div>
         </div>

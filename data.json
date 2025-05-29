@@ -1,24 +1,17 @@
 {
   "users": [
-    {
-      "id": "emp1",
-      "name": "Sophia Chen"
-    },
-    {
-      "id": "emp2",
-      "name": "John Doe"
-    },
-    {
-      "id": "emp3",
-      "name": "Alice Wonderland"
-    }
+    { "id": "emp1", "name": "Sophia Chen" },
+    { "id": "emp2", "name": "John Doe" },
+    { "id": "emp3", "name": "Alice Wonderland" }
   ],
   "documents": [
     {
       "id": "task001",
       "title": "MRL Update Q3",
       "type": "MRL",
+      "startDate": "2024-09-10",
       "dueDate": "2024-09-15",
+      "completionDate": null,
       "status": "Not Started",
       "assignedToUserId": "emp1"
     },
@@ -26,7 +19,9 @@
       "id": "task002",
       "title": "Instrument MDL Validation",
       "type": "iDOC",
+      "startDate": "2024-06-25",
       "dueDate": "2024-07-01",
+      "completionDate": null,
       "status": "Overdue",
       "assignedToUserId": "emp1"
     },
@@ -34,7 +29,9 @@
       "id": "task003",
       "title": "Annual SOP Review - Lab Safety",
       "type": "SOP Review",
+      "startDate": "2024-10-15",
       "dueDate": "2024-10-20",
+      "completionDate": null,
       "status": "In Progress",
       "assignedToUserId": "emp2"
     },
@@ -42,7 +39,9 @@
       "id": "task004",
       "title": "Internal Audit Prep - Section A",
       "type": "Internal Audit",
+      "startDate": "2024-08-25",
       "dueDate": "2024-08-30",
+      "completionDate": null,
       "status": "Not Started",
       "assignedToUserId": "emp3"
     },
@@ -50,7 +49,9 @@
       "id": "task005",
       "title": "QMS Document Control Update",
       "type": "iDOC",
+      "startDate": "2024-09-01",
       "dueDate": "2024-09-05",
+      "completionDate": null,
       "status": "In Progress",
       "assignedToUserId": "emp3"
     }

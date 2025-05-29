@@ -22,12 +22,14 @@ document.addEventListener('DOMContentLoaded', () => {
   const addDocumentForm = document.getElementById('addDocumentForm');
   const newDocTitleInput = document.getElementById('newDocTitle');
   const newDocReviewerSelect = document.getElementById('newDocReviewerSelect');
+  const newDocStartDateInput = document.getElementById('newDocStartDate'); // Added
   const newDocDueDateInput = document.getElementById('newDocDueDate');
 
   // Null checks for new document form elements
   if (!addDocumentForm) console.error('Add Document Form (addDocumentForm) not found!');
   if (!newDocTitleInput) console.error('New Document Title Input (newDocTitle) not found!');
   if (!newDocReviewerSelect) console.error('New Document Reviewer Select (newDocReviewerSelect) not found!');
+  if (!newDocStartDateInput) console.error('New Document Start Date Input (newDocStartDate) not found!'); // Added
   if (!newDocDueDateInput) console.error('New Document Due Date Input (newDocDueDate) not found!');
 
   // DOM elements for "Add New Reviewer" form
@@ -211,6 +213,7 @@ document.addEventListener('DOMContentLoaded', () => {
         reviewer: reviewerName,
         dueDate: doc.dueDate,
         status: doc.status,
+        // startDate: doc.startDate // Not directly used in table display yet
       };
       
       const dueDate = new Date(taskForTable.dueDate);
@@ -332,21 +335,31 @@ document.addEventListener('DOMContentLoaded', () => {
 
       const newDocTitle = newDocTitleInput.value.trim();
       const selectedReviewerId = newDocReviewerSelect.value; 
+      const newDocStartDate = newDocStartDateInput.value; // Added
       const newDocDueDate = newDocDueDateInput.value;
 
       if (!newDocTitle) { alert('Please enter a document title.'); return; }
       if (newDocReviewerSelect.value === "" && !selectedReviewerId && newDocReviewerSelect.options[newDocReviewerSelect.selectedIndex].text !== "Unassigned") { 
          alert('Please select a reviewer or "Unassigned".'); return;
       }
+      if (!newDocStartDate) { alert('Please select a start date.'); return;} // Added validation
       if (!newDocDueDate) { alert('Please select a due date.'); return; }
+
+      // Optional: Validate startDate <= dueDate
+      if (newDocStartDate && newDocDueDate && new Date(newDocStartDate) > new Date(newDocDueDate)) {
+        alert('Start date cannot be after due date.');
+        return;
+      }
 
       const newDocument = {
         id: 'doc' + Date.now(), 
         title: newDocTitle,
         type: "General", 
+        startDate: newDocStartDate, // Added
         dueDate: newDocDueDate,
         status: "Not Started",
-        assignedToUserId: selectedReviewerId === "" ? null : selectedReviewerId 
+        assignedToUserId: selectedReviewerId === "" ? null : selectedReviewerId,
+        completionDate: null // Added
       };
 
       if (!appData.documents) appData.documents = [];
@@ -354,7 +367,7 @@ document.addEventListener('DOMContentLoaded', () => {
       
       const reviewer = appData.users.find(u => u.id === selectedReviewerId);
       const reviewerName = reviewer ? reviewer.name : "Unassigned";
-      console.log(`New document "${newDocTitle}" assigned to ${reviewerName}. AppData:`, appData);
+      console.log(`New document "${newDocTitle}" (Start: ${newDocStartDate}) assigned to ${reviewerName}. AppData:`, appData);
 
       processAndDisplayReviews(appData);
       populateTitleFilterDropdown(appData.documents); 
@@ -362,6 +375,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
       addDocumentForm.reset();
       newDocReviewerSelect.value = ""; 
+      // newDocStartDateInput.value = ""; // Already handled by form.reset()
     });
   }
 
@@ -409,7 +423,7 @@ document.addEventListener('DOMContentLoaded', () => {
       if (nameExists) { alert('A reviewer with this name already exists.'); return; }
 
       const newUser = {
-        id: 'user' + Date.now(), // Changed prefix to 'user'
+        id: 'user' + Date.now(), 
         name: newReviewerName
       };
 

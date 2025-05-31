@@ -1,5 +1,5 @@
 import * as dataService from './dataService.js';
-import { getElement, getElements, qs, qsa, getStatusClasses } from './utils.js';
+import { getElement, getElements, qs, qsa, getStatusClasses, populateSelectWithOptions, createOptionElement as createOptionElementFromUtils } from './utils.js'; // Ensure populateSelectWithOptions is imported
 
 document.addEventListener('DOMContentLoaded', async () => {
   // Table bodies
@@ -37,110 +37,23 @@ document.addEventListener('DOMContentLoaded', async () => {
   if (!newDocDueDateInput) console.error('New Document Due Date Input (newDocDueDate) not found!');
 
   // DOM elements for "Add New Reviewer" form
-  const addReviewerForm = getElement('addReviewerForm');
-  const newReviewerNameInput = getElement('newReviewerName');
+  // const addReviewerForm = getElement('addReviewerForm'); // Removed
+  // const newReviewerNameInput = getElement('newReviewerName'); // Removed
 
   // Null checks for new reviewer form elements
-  if (!addReviewerForm) console.error('Add Reviewer Form (addReviewerForm) not found!');
-  if (!newReviewerNameInput) console.error('New Reviewer Name Input (newReviewerName) not found!');
+  // if (!addReviewerForm) console.error('Add Reviewer Form (addReviewerForm) not found!'); // Removed
+  // if (!newReviewerNameInput) console.error('New Reviewer Name Input (newReviewerName) not found!'); // Removed
 
   // DOM elements for "Remove Reviewer" section
-  const removeReviewerSelect = getElement('removeReviewerSelect');
-  const removeReviewerButton = getElement('removeReviewerButton');
+  // const removeReviewerSelect = getElement('removeReviewerSelect'); // Removed
+  // const removeReviewerButton = getElement('removeReviewerButton'); // Removed
 
   // Null checks for remove reviewer elements
-  if (!removeReviewerSelect) console.error('Remove Reviewer Select (removeReviewerSelect) not found!');
-  if (!removeReviewerButton) console.error('Remove Reviewer Button (removeReviewerButton) not found!');
+  // if (!removeReviewerSelect) console.error('Remove Reviewer Select (removeReviewerSelect) not found!'); // Removed
+  // if (!removeReviewerButton) console.error('Remove Reviewer Button (removeReviewerButton) not found!'); // Removed
 
-  /**
-   * Creates an option element.
-   * @param {string} value - The value for the option.
-   * @param {string} text - The text content for the option.
-   * @param {boolean} [disabled=false] - Whether the option should be disabled.
-   * @param {boolean} [selected=false] - Whether the option should be selected.
-   * @returns {HTMLOptionElement} The created option element.
-   */
-  function createOptionElement(value, text, disabled = false, selected = false) {
-    const option = document.createElement('option');
-    option.value = value;
-    option.textContent = text;
-    option.disabled = disabled;
-    option.selected = selected;
-    return option;
-  }
-
-  /**
-   * Populates a select element with options from a data array.
-   * @param {HTMLSelectElement} selectElement - The select element to populate.
-   * @param {Array<Object>} items - The array of data items.
-   * @param {Object} config - Configuration object.
-   * @param {string|Function} config.valueKey - Key or function to get option value from an item.
-   * @param {string|Function} config.textKey - Key or function to get option text from an item.
-   * @param {Object} [config.placeholder] - Optional placeholder.
-   * @param {string} config.placeholder.value - Value for the placeholder.
-   * @param {string} config.placeholder.text - Text for the placeholder.
-   * @param {boolean} [config.placeholder.disabled=false] - If placeholder is disabled.
-   * @param {boolean} [config.includeUnassigned=false] - Whether to include a generic "Unassigned" option (for user/reviewer selects).
-   * @param {string} [config.unassignedValue=""] - Value for the "Unassigned" option.
-   * @param {string} [config.unassignedText="Unassigned"] - Text for the "Unassigned" option.
-   */
-  function populateSelectWithOptions(selectElement, items, config) {
-    if (!selectElement) return;
-
-    const currentSelectedValue = selectElement.value;
-    selectElement.innerHTML = ''; // Clear existing options
-
-    // Add placeholder if configured
-    if (config.placeholder) {
-      selectElement.appendChild(
-        createOptionElement(config.placeholder.value, config.placeholder.text, config.placeholder.disabled || false)
-      );
-    }
-    
-    // Add "Unassigned" option if configured (typically for reviewer selects)
-    if (config.includeUnassigned) {
-        selectElement.appendChild(
-            createOptionElement(config.unassignedValue !== undefined ? config.unassignedValue : "", config.unassignedText || "Unassigned")
-        );
-    }
-
-    const uniqueOptions = new Map(); // To handle cases where text or value might not be unique if derived
-
-    if (items && Array.isArray(items)) {
-      items.forEach(item => {
-        const value = typeof config.valueKey === 'function' ? config.valueKey(item) : item[config.valueKey];
-        const text = typeof config.textKey === 'function' ? config.textKey(item) : item[config.textKey];
-        if (value !== undefined && text !== undefined) {
-            if(!uniqueOptions.has(value)){ // Add only if value is unique to avoid duplicate value attributes
-                uniqueOptions.set(value, text);
-            }
-        }
-      });
-    }
-    
-    uniqueOptions.forEach((text, value) => {
-        selectElement.appendChild(createOptionElement(value, text));
-    });
-
-
-    // Attempt to restore selection or set to placeholder/default
-    if (Array.from(selectElement.options).some(opt => opt.value === currentSelectedValue)) {
-      selectElement.value = currentSelectedValue;
-    } else if (config.placeholder) {
-      selectElement.value = config.placeholder.value;
-    } else if (config.includeUnassigned) {
-      selectElement.value = config.unassignedValue !== undefined ? config.unassignedValue : "";
-    } else if (selectElement.options.length > 0) {
-      selectElement.value = selectElement.options[0].value; // Fallback to the first option
-    }
-
-    // Ensure the placeholder is selected if its value matches the final selectElement.value and it's disabled
-     if (config.placeholder && selectElement.value === config.placeholder.value && config.placeholder.disabled) {
-        const placeholderOption = Array.from(selectElement.options).find(opt => opt.value === config.placeholder.value);
-        if (placeholderOption) placeholderOption.selected = true;
-    }
-  }
-
+  // createOptionElement and populateSelectWithOptions are now imported from utils.js
+  // The local definitions of these functions have been removed.
 
   async function populateAllDropdowns() {
     try {
@@ -149,7 +62,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       populateTitleFilterDropdown(documents);
       populateReviewerFilterDropdown(users);
       populateNewDocReviewerSelect(users);
-      populateRemoveReviewerSelect(users);
+      // populateRemoveReviewerSelect(users); // Removed
     } catch (error) {
       console.error('Error populating dropdowns:', error);
       // Potentially display an error message to the user
@@ -198,18 +111,18 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
   }
 
-  function populateRemoveReviewerSelect(users) {
-    if (!removeReviewerSelect) return;
-    populateSelectWithOptions(removeReviewerSelect, users, {
-      valueKey: 'id',
-      textKey: 'name',
-      placeholder: { value: "", text: "Select Reviewer", disabled: true }
-    });
-     // Ensure the "Select Reviewer" (disabled placeholder) is selected by default if no other value.
-    if (!removeReviewerSelect.value && removeReviewerSelect.options.length > 0 && removeReviewerSelect.options[0].disabled) {
-      removeReviewerSelect.options[0].selected = true;
-    }
-  }
+  // function populateRemoveReviewerSelect(users) { // Removed
+  //   if (!removeReviewerSelect) return;
+  //   populateSelectWithOptions(removeReviewerSelect, users, {
+  //     valueKey: 'id',
+  //     textKey: 'name',
+  //     placeholder: { value: "", text: "Select Reviewer", disabled: true }
+  //   });
+  //    // Ensure the "Select Reviewer" (disabled placeholder) is selected by default if no other value.
+  //   if (!removeReviewerSelect.value && removeReviewerSelect.options.length > 0 && removeReviewerSelect.options[0].disabled) {
+  //     removeReviewerSelect.options[0].selected = true;
+  //   }
+  // }
 
   async function initialFetchAndDisplay() {
     try {
@@ -222,7 +135,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       populateTitleFilterDropdown([]);
       populateReviewerFilterDropdown([]);
       populateNewDocReviewerSelect([]);
-      populateRemoveReviewerSelect([]);
+      // populateRemoveReviewerSelect([]); // Removed
     }
   }
 

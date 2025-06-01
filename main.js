@@ -22,20 +22,6 @@ document.addEventListener('DOMContentLoaded', async () => {
   let currentReviewerFilter = 'All';
   let currentStatusFilter = 'All';
 
-  // DOM elements for "Add New Review Document" form
-  const addDocumentForm = getElement('addDocumentForm');
-  const newDocTitleInput = getElement('newDocTitle');
-  const newDocReviewerSelect = getElement('newDocReviewerSelect');
-  const newDocStartDateInput = getElement('newDocStartDate');
-  const newDocDueDateInput = getElement('newDocDueDate');
-
-  // Null checks for new document form elements
-  if (!addDocumentForm) console.error('Add Document Form (addDocumentForm) not found!');
-  if (!newDocTitleInput) console.error('New Document Title Input (newDocTitle) not found!');
-  if (!newDocReviewerSelect) console.error('New Document Reviewer Select (newDocReviewerSelect) not found!');
-  if (!newDocStartDateInput) console.error('New Document Start Date Input (newDocStartDate) not found!');
-  if (!newDocDueDateInput) console.error('New Document Due Date Input (newDocDueDate) not found!');
-
   // DOM elements for "Add New Reviewer" form
   // const addReviewerForm = getElement('addReviewerForm'); // Removed
   // const newReviewerNameInput = getElement('newReviewerName'); // Removed

@@ -35,7 +35,6 @@ document.addEventListener('DOMContentLoaded', async () => {
   if (!addReviewerMessage) console.error('Add Reviewer Message area (addReviewerMessage) not found!');
   if (!removeReviewerMessage) console.error('Remove Reviewer Message area (removeReviewerMessage) not found!');
 
-
   // Function to load existing settings (placeholder - sets default values)
   function loadSettings() {
     if (emailNotificationsCheckbox) {
@@ -154,25 +153,6 @@ document.addEventListener('DOMContentLoaded', async () => {
         }
     });
   }
-
-  // Initial setup
-  loadSettings();
-
-  // Initialize reviewer management sections if elements are present
-  if (addReviewerForm || removeReviewerButton) {
-    try {
-        await dataService.fetchData(); // Ensure data is loaded for dataService operations
-        await populateRemoveReviewerDropdown();
-    } catch (error) {
-        console.error('Failed to load initial data for reviewer management:', error);
-        if (removeReviewerMessage) {
-          removeReviewerMessage.textContent = 'Error initializing reviewer data.';
-          removeReviewerMessage.className = 'text-red-500 text-sm mt-2';
-        }
-        if (addReviewerMessage) {
-          addReviewerMessage.textContent = 'Error initializing reviewer data.';
-          addReviewerMessage.className = 'text-red-500 text-sm mt-2';
-        }
     }
   }
 });

@@ -115,82 +115,36 @@
             </div>
             <!-- End New Filter Inputs Section -->
 
-            <!-- New Document Actions Section -->
-            <div class="document-actions p-4">
-              <h3 class="text-[#0c1c17] text-lg font-semibold mb-4">Add New Review Document</h3>
-              <form id="addDocumentForm" class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
-                <div class="mb-4">
-                  <label class="block text-gray-700 text-sm font-bold mb-2" for="newDocTitle">
-                    Document Title
-                  </label>
-                  <input type="text" id="newDocTitle" placeholder="Enter document title" required class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
-                </div>
-                <div class="mb-4">
-                  <label class="block text-gray-700 text-sm font-bold mb-2" for="newDocReviewerSelect">
-                    Assign to Reviewer
-                  </label>
-                  <select id="newDocReviewerSelect" required class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
-                    <option value="" disabled selected>Select Reviewer</option>
-                    <!-- Options will be populated by JavaScript -->
-                  </select>
-                </div>
-                <div class="mb-4">
-                  <label class="block text-gray-700 text-sm font-bold mb-2" for="newDocStartDate">
-                    Start Date
-                  </label>
-                  <input type="date" id="newDocStartDate" required class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
-                </div>
-                <div class="mb-4">
-                  <label class="block text-gray-700 text-sm font-bold mb-2" for="newDocDueDate">
-                    Due Date
-                  </label>
-                  <input type="date" id="newDocDueDate" required class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
-                </div>
-                <div class="flex items-center justify-start">
-                  <button type="submit" class="bg-[#019863] hover:bg-[#017a50] text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
-                    Add Document
-                  </button>
-                </div>
-              </form>
-
-              <hr class="my-8 border-gray-300"> <!-- Separator -->
-
-              <h3 class="text-[#0c1c17] text-lg font-semibold mb-4">Add New Reviewer</h3>
-              <form id="addReviewerForm" class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
-                <div class="mb-4">
-                  <label class="block text-gray-700 text-sm font-bold mb-2" for="newReviewerName">
-                    Reviewer Name
-                  </label>
-                  <input type="text" id="newReviewerName" placeholder="Enter new reviewer name" required class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
-                </div>
-                <div class="flex items-center justify-start">
-                  <button type="submit" class="bg-[#019863] hover:bg-[#017a50] text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
-                    Add Reviewer
-                  </button>
-                </div>
-              </form>
-
-              <hr class="my-8 border-gray-300"> <!-- Separator -->
-
-              <h3 class="text-[#0c1c17] text-lg font-semibold mb-4">Remove Reviewer</h3>
-              <div id="removeReviewerSection" class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
-                <div class="mb-4">
-                  <label class="block text-gray-700 text-sm font-bold mb-2" for="removeReviewerSelect">
-                    Select Reviewer to Remove
-                  </label>
-                  <select id="removeReviewerSelect" required class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mb-2 leading-tight focus:outline-none focus:shadow-outline">
-                    <option value="" disabled selected>Select Reviewer</option>
-                    <!-- Options will be populated by JavaScript -->
-                  </select>
-                </div>
-                <div class="flex items-center justify-start">
-                  <button id="removeReviewerButton" class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
-                    Remove Selected Reviewer
-                  </button>
-                </div>
-              </div>
+            <!-- Add New Review Document Section -->
+            <div class="document-actions-wrapper bg-white p-6 rounded-lg shadow mb-6 mx-auto max-w-2xl"> <!-- Wrapper for styling, similar to settings page sections -->
+                <h3 class="text-[#0c1c17] text-xl font-semibold mb-4">Add New Review Document</h3>
+                <form id="addDocumentForm" class="space-y-4">
+                    <div>
+                        <label for="newDocTitle" class="block text-sm font-medium text-gray-700">Document Title:</label>
+                        <input type="text" id="newDocTitle" name="newDocTitle" required class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-teal-500 focus:border-teal-500 sm:text-sm">
+                    </div>
+                    <div>
+                        <label for="newDocReviewerSelect" class="block text-sm font-medium text-gray-700">Assign to Reviewer:</label>
+                        <select id="newDocReviewerSelect" name="newDocReviewerSelect" class="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-teal-500 focus:border-teal-500 sm:text-sm rounded-md">
+                            <option value="" disabled selected>Select Reviewer</option>
+                            <!-- Options will be populated by JavaScript -->
+                        </select>
+                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <label for="newDocStartDate" class="block text-sm font-medium text-gray-700">Start Date:</label>
+                            <input type="date" id="newDocStartDate" name="newDocStartDate" required class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-teal-500 focus:border-teal-500 sm:text-sm">
+                        </div>
+                        <div>
+                            <label for="newDocDueDate" class="block text-sm font-medium text-gray-700">Due Date:</label>
+                            <input type="date" id="newDocDueDate" name="newDocDueDate" required class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-teal-500 focus:border-teal-500 sm:text-sm">
+                        </div>
+                    </div>
+                    <button type="submit" class="bg-teal-500 hover:bg-teal-600 text-white font-medium py-2 px-4 rounded-md shadow-sm">Add Document</button>
+                </form>
+                <div id="addDocumentMessage" class="mt-2 text-sm"></div>
             </div>
-            <!-- End New Document Actions Section -->
+            <!-- "Add New Reviewer" and "Remove Reviewer" sections intentionally removed -->
 
             <h2 class="text-[#0c1c17] text-[22px] font-bold leading-tight tracking-[-0.015em] px-4 pb-3 pt-5">Upcoming Reviews</h2>
             <div class="px-4 py-3 @container">
@@ -345,5 +299,6 @@
         </div>
       </div>
     </div>
+    <script type="module" src="main.js"></script>
   </body>
 </html>

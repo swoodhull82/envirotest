@@ -1,17 +1,16 @@
-document.addEventListener('DOMContentLoaded', () => {
-  const emailNotificationsCheckbox = document.getElementById('emailNotifications');
-  const defaultViewSelect = document.getElementById('defaultView');
-  const saveSettingsBtn = document.getElementById('saveSettingsBtn');
-  const settingsForm = document.getElementById('settingsForm'); // Get the form
+import * as dataService from './dataService.js';
+import { getElement, populateSelectWithOptions } from './utils.js'; // Assuming populateSelectWithOptions is in utils.js
 
-  // Check if all elements are present
-  if (!settingsForm) {
-    console.error('Settings form (settingsForm) not found!');
-    return;
-  }
+document.addEventListener('DOMContentLoaded', async () => {
+  // Existing settings elements
+  const emailNotificationsCheckbox = getElement('emailNotifications');
+  const defaultViewSelect = getElement('defaultView');
+  const saveSettingsBtn = getElement('saveSettingsBtn');
+  // const settingsForm = getElement('settingsForm'); // Not strictly used by event listeners directly
+
+  // Check if original setting elements are present
   if (!emailNotificationsCheckbox) {
     console.error('Email notifications checkbox (emailNotifications) not found!');
-    // Optionally, disable parts of the script or show a general error message
   }
   if (!defaultViewSelect) {
     console.error('Default view select (defaultView) not found!');
@@ -20,23 +19,52 @@ document.addEventListener('DOMContentLoaded', () => {
     console.error('Save settings button (saveSettingsBtn) not found!');
   }
 
-  // Function to load settings (placeholder - sets default values)
+  // Reviewer Management DOM Elements
+  const addReviewerForm = getElement('addReviewerForm');
+  const newReviewerNameInput = getElement('newReviewerName');
+  const removeReviewerSelect = getElement('removeReviewerSelect');
+  const removeReviewerButton = getElement('removeReviewerButton');
+  const addReviewerMessage = getElement('addReviewerMessage');
+  const removeReviewerMessage = getElement('removeReviewerMessage');
+
+  // Null checks for reviewer management elements
+  if (!addReviewerForm) console.error('Add Reviewer Form (addReviewerForm) not found!');
+  if (!newReviewerNameInput) console.error('New Reviewer Name Input (newReviewerName) not found!');
+  if (!removeReviewerSelect) console.error('Remove Reviewer Select (removeReviewerSelect) not found!');
+  if (!removeReviewerButton) console.error('Remove Reviewer Button (removeReviewerButton) not found!');
+  if (!addReviewerMessage) console.error('Add Reviewer Message area (addReviewerMessage) not found!');
+  if (!removeReviewerMessage) console.error('Remove Reviewer Message area (removeReviewerMessage) not found!');
+
+  // "Add New Review Document" DOM Elements - REMOVED
+  // const addDocumentForm = getElement('addDocumentForm');
+  // const newDocTitleInput = getElement('newDocTitle');
+  // const newDocReviewerSelect = getElement('newDocReviewerSelect');
+  // const newDocStartDateInput = getElement('newDocStartDate');
+  // const newDocDueDateInput = getElement('newDocDueDate');
+  // const addDocumentMessage = getElement('addDocumentMessage');
+
+  // Null checks for "Add New Review Document" elements - REMOVED
+  // if (!addDocumentForm) console.error('Add Document Form (addDocumentForm) not found!');
+  // if (!newDocTitleInput) console.error('New Document Title Input (newDocTitle) not found!');
+  // if (!newDocReviewerSelect) console.error('New Document Reviewer Select (newDocReviewerSelect) not found!');
+  // if (!newDocStartDateInput) console.error('New Document Start Date Input (newDocStartDate) not found!');
+  // if (!newDocDueDateInput) console.error('New Document Due Date Input (newDocDueDate) not found!');
+  // if (!addDocumentMessage) console.error('Add Document Message area (addDocumentMessage) not found!');
+
+  // Function to load existing settings (placeholder - sets default values)
   function loadSettings() {
     if (emailNotificationsCheckbox) {
-      emailNotificationsCheckbox.checked = true; // Default: email notifications enabled
+      emailNotificationsCheckbox.checked = true;
     }
     if (defaultViewSelect) {
-      defaultViewSelect.value = 'compact'; // Default: compact view
+      defaultViewSelect.value = 'compact';
     }
-    console.log('Default settings loaded into UI.');
+    // console.log('Default settings loaded into UI.'); // Removed for cleanup
   }
 
-  // Event listener for the save settings button
+  // Event listener for the original save settings button
   if (saveSettingsBtn) {
     saveSettingsBtn.addEventListener('click', () => {
-      // In a real form, you'd likely preventDefault if the button was type="submit"
-      // For a type="button", it's not strictly necessary but good practice if it were part of a form submission.
-
       const currentSettings = {};
       if (emailNotificationsCheckbox) {
         currentSettings.email = emailNotificationsCheckbox.checked;
@@ -44,15 +72,129 @@ document.addEventListener('DOMContentLoaded', () => {
       if (defaultViewSelect) {
         currentSettings.view = defaultViewSelect.value;
       }
-
-      console.log('Saving settings:', currentSettings);
+      // console.log('Saving settings:', currentSettings); // Removed for cleanup
       alert('Settings saved (logged to console)!');
-      
-      // In a real application, you would save these settings to localStorage or a backend.
-      // localStorage.setItem('userSettings', JSON.stringify(currentSettings));
     });
   }
   
-  // Call loadSettings on DOM load
+  // --- Reviewer Management Logic ---
+
+  async function populateRemoveReviewerDropdown() {
+    if (!removeReviewerSelect) return;
+    try {
+        const users = await dataService.getUsers();
+        // Configure populateSelectWithOptions for users
+        // The `items` key in the config object should be the array of users.
+        // `valueField` and `textField` tell the function which properties of each user object to use.
+        // `initialUnselectedText` provides the text for the first, disabled option.
+        populateSelectWithOptions(removeReviewerSelect, {
+            items: users,
+            valueField: 'id', // Assumes user objects have an 'id' property
+            textField: 'name', // Assumes user objects have a 'name' property
+            initialUnselected: { value: "", text: "Select Reviewer" } // Creates a disabled "Select Reviewer" option
+        });
+        if (removeReviewerMessage) removeReviewerMessage.textContent = '';
+    } catch (error) {
+        console.error('Error populating remove reviewer dropdown:', error);
+        if (removeReviewerMessage) {
+            removeReviewerMessage.textContent = 'Error loading reviewers.';
+            removeReviewerMessage.className = 'text-red-500 text-sm mt-2';
+        }
+    }
+  }
+
+  if (addReviewerForm) {
+    addReviewerForm.addEventListener('submit', async (event) => {
+        event.preventDefault();
+        if (!newReviewerNameInput || !addReviewerMessage) return;
+
+        const newReviewerName = newReviewerNameInput.value.trim();
+        if (!newReviewerName) {
+            addReviewerMessage.textContent = 'Please enter a reviewer name.';
+            addReviewerMessage.className = 'text-red-500 text-sm mt-2';
+            return;
+        }
+
+        try {
+            const existingUsers = await dataService.getUsers();
+            if (existingUsers.some(user => user.name.toLowerCase() === newReviewerName.toLowerCase())) {
+                addReviewerMessage.textContent = 'A reviewer with this name already exists.';
+                addReviewerMessage.className = 'text-red-500 text-sm mt-2';
+                return;
+            }
+
+            await dataService.addUser({ name: newReviewerName });
+            addReviewerMessage.textContent = `Reviewer "${newReviewerName}" added successfully.`;
+            addReviewerMessage.className = 'text-green-500 text-sm mt-2';
+            newReviewerNameInput.value = ''; // Clear input field
+            await populateRemoveReviewerDropdown();
+        } catch (error) {
+            console.error('Error adding reviewer:', error);
+            addReviewerMessage.textContent = 'Failed to add reviewer.';
+            addReviewerMessage.className = 'text-red-500 text-sm mt-2';
+        }
+    });
+  }
+
+  if (removeReviewerButton) {
+    removeReviewerButton.addEventListener('click', async () => {
+        if (!removeReviewerSelect || !removeReviewerMessage) return;
+
+        const reviewerIdToRemove = removeReviewerSelect.value;
+        if (!reviewerIdToRemove) {
+            removeReviewerMessage.textContent = 'Please select a reviewer to remove.';
+            removeReviewerMessage.className = 'text-red-500 text-sm mt-2';
+            return;
+        }
+
+        // Optional: Add a confirmation dialog
+        if (!confirm(`Are you sure you want to remove reviewer "${removeReviewerSelect.options[removeReviewerSelect.selectedIndex].text}"? This will also unassign them from any documents.`)) {
+            return;
+        }
+
+        try {
+            const removedUser = await dataService.removeUser(reviewerIdToRemove);
+            if (removedUser) {
+                removeReviewerMessage.textContent = `Reviewer "${removedUser.name}" removed successfully.`;
+                removeReviewerMessage.className = 'text-green-500 text-sm mt-2';
+            } else {
+                removeReviewerMessage.textContent = 'Reviewer not found or already removed.';
+                removeReviewerMessage.className = 'text-yellow-500 text-sm mt-2';
+            }
+            await populateRemoveReviewerDropdown();
+        } catch (error) {
+            console.error('Error removing reviewer:', error);
+            removeReviewerMessage.textContent = 'Failed to remove reviewer.';
+            removeReviewerMessage.className = 'text-red-500 text-sm mt-2';
+        }
+    });
+  }
+
+  // --- Add New Review Document Logic --- REMOVED
+  // async function populateNewDocReviewerDropdown() { /* ... */ } // REMOVED
+  // if (addDocumentForm) { /* ... addEventListener ... */ } // REMOVED
+
+  // Initial setup
   loadSettings();
+
+  // Initialize reviewer management sections if elements are present
+  // Note: addDocumentForm related logic is removed from the condition and the try/catch block
+  if (addReviewerForm || removeReviewerButton) {
+    try {
+        await dataService.fetchData(); // Ensure data is loaded for dataService operations
+        await populateRemoveReviewerDropdown();
+        // await populateNewDocReviewerDropdown(); // Call REMOVED
+    } catch (error) {
+        console.error('Failed to load initial data for reviewer management:', error); // Error message generalized
+        if (removeReviewerMessage) {
+          removeReviewerMessage.textContent = 'Error initializing reviewer data.'; // Message more specific
+          removeReviewerMessage.className = 'text-red-500 text-sm mt-2';
+        }
+        if (addReviewerMessage) {
+          addReviewerMessage.textContent = 'Error initializing reviewer data.'; // Message more specific
+          addReviewerMessage.className = 'text-red-500 text-sm mt-2';
+        }
+        // Removed addDocumentMessage handling from this catch block
+    }
+  }
 });

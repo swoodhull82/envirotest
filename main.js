@@ -22,9 +22,6 @@ document.addEventListener('DOMContentLoaded', async () => {
   let currentReviewerFilter = 'All';
   let currentStatusFilter = 'All';
 
-  // DOM elements for "Add New Review Document" form - ENTIRELY REMOVED
-  // Null checks for new document form elements - ENTIRELY REMOVED
-
   // DOM elements for "Add New Reviewer" form
   // const addReviewerForm = getElement('addReviewerForm'); // Removed
   // const newReviewerNameInput = getElement('newReviewerName'); // Removed
